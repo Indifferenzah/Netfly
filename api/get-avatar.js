@@ -1,38 +1,37 @@
-// Netlify Function: get-avatar
-// Usage: /.netlify/functions/get-avatar?id=<discord_user_id>
-// Requires environment variable DISCORD_BOT_TOKEN set in Netlify site settings.
+// /api/get-avatar.js (Vercel)
 
-export async function handler(event) {
-  const headers = {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, OPTIONS',
-  };
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 200, headers, body: '' };
+export default async function handler(req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
   }
-  const id = event.queryStringParameters?.id;
+
+  const id = req.query.id;
   if (!id) {
-    return { statusCode: 400, headers, body: JSON.stringify({ error: 'Missing id' }) };
+    return res.status(400).json({ error: 'Missing id' });
   }
+
   const token = process.env.DISCORD_BOT_TOKEN;
-  if (!token) {
-    // Fallback to default embed avatar if token not configured
-    try {
-      const idx = Number((BigInt(id) >> 22n) % 6n);
-      return { statusCode: 200, headers, body: JSON.stringify({ url: `https://cdn.discordapp.com/embed/avatars/${idx}.png`, fallback: true }) };
-    } catch {
-      return { statusCode: 500, headers, body: JSON.stringify({ error: 'Server not configured' }) };
-    }
-  }
+
   try {
+    if (!token) {
+      // Fallback embed avatar
+      const idx = Number((BigInt(id) >> 22n) % 6n);
+      return res.status(200).json({ url: `https://cdn.discordapp.com/embed/avatars/${idx}.png`, fallback: true });
+    }
+
     const resp = await fetch(`https://discord.com/api/users/${encodeURIComponent(id)}`, {
       headers: { Authorization: `Bot ${token}` },
     });
+
     if (!resp.ok) {
       const idx = Number((BigInt(id) >> 22n) % 6n);
-      return { statusCode: resp.status, headers, body: JSON.stringify({ url: `https://cdn.discordapp.com/embed/avatars/${idx}.png`, fallback: true }) };
+      return res.status(resp.status).json({ url: `https://cdn.discordapp.com/embed/avatars/${idx}.png`, fallback: true });
     }
+
     const user = await resp.json();
     let url;
     if (user.avatar) {
@@ -42,13 +41,15 @@ export async function handler(event) {
       const idx = Number((BigInt(id) >> 22n) % 6n);
       url = `https://cdn.discordapp.com/embed/avatars/${idx}.png`;
     }
-    return { statusCode: 200, headers, body: JSON.stringify({ url }) };
+
+    return res.status(200).json({ url });
   } catch (e) {
+    // fallback in caso di errore
     try {
       const idx = Number((BigInt(id) >> 22n) % 6n);
-      return { statusCode: 200, headers, body: JSON.stringify({ url: `https://cdn.discordapp.com/embed/avatars/${idx}.png`, fallback: true }) };
+      return res.status(200).json({ url: `https://cdn.discordapp.com/embed/avatars/${idx}.png`, fallback: true });
     } catch {
-      return { statusCode: 500, headers, body: JSON.stringify({ error: 'Unexpected error' }) };
+      return res.status(500).json({ error: 'Unexpected error' });
     }
   }
 }
