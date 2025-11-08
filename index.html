@@ -8,7 +8,6 @@
       name="description"
       content="Sito ufficiale del Clan Valiance. Unisciti a noi per PVP competitivo, cw coordinate e progetti avanzati su Minecraft!"
     />
-    <!-- Open Graph: anteprima per social -->
     <meta property="og:title" content="Valiance | Clan Minecraft" />
     <meta property="og:description"
       content="Sito ufficiale del Clan Valiance. Unisciti a noi per PVP competitivo, cw coordinate e progetti avanzati su Minecraft!" />
@@ -16,7 +15,6 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://valiancev2.netlify.app" />
 
-    <!-- Twitter card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="https://i.imgur.com/yE5SQ7N.png" />
     <link rel="icon" href="/pfp.png" />
@@ -32,7 +30,6 @@
         --border: #132033;
         --glow: 0 0 24px rgba(34, 211, 238, 0.25),
           0 0 44px rgba(139, 92, 246, 0.15);
-        /* header fixed visible */
         --header-translate: 0px;
       }
       * {
@@ -122,9 +119,7 @@
         text-decoration: none;
       }
 
-      /* Center everything by default */
       main, main section, main .container { text-align: center; }
-      /* Exclude roster section and its content from centering */
       #roster h4 { text-align: initial; }
 
       .hero {
@@ -249,7 +244,6 @@
       .roster .member:hover {
         transform: translateY(-2px);
       }
-      /* feedback when ID copied */
       .member.copied { outline: 2px solid #22d3ee; filter: brightness(1.07); }
       .notification {
         position: fixed;
@@ -298,7 +292,6 @@
       .rules li {
         margin: 6px 0;
       }
-      /* Center content inside the rules container card only */
       #rules .container.card {
         text-align: center;
       }
@@ -327,7 +320,6 @@
         align-items: center;
         justify-content: center;
       }
-      /* center entire content of the status card */
       #status .container.card {
         text-align: center;
       }
@@ -416,7 +408,6 @@
         font-size: 14px;
       }
 
-      /* Responsive columns */
       .col-12 {
         grid-column: 1 / -1;
       }
