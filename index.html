@@ -126,12 +126,12 @@
       <div class="container">
         <h2>Roster</h2>
         <div class="grid">
-          <div class="col-4 card member" data-discord-id="1123622103917285418"><div class="avatar" aria-label="Avatar">L</div><div><strong>DrNooB_</strong><div class="muted name">Co Leader</div></div></div>
-          <div class="col-4 card member" data-discord-id="234567890123456789"><div class="avatar" aria-label="Avatar">O</div><div><strong>Officer</strong><div class="muted name">Astra</div></div></div>
-          <div class="col-4 card member" data-discord-id="345678901234567890"><div class="avatar" aria-label="Avatar">R</div><div><strong>Raider</strong><div class="muted name">Rogue</div></div></div>
-          <div class="col-4 card member" data-discord-id="456789012345678901"><div class="avatar" aria-label="Avatar">B</div><div><strong>Builder</strong><div class="muted name">Forge</div></div></div>
-          <div class="col-4 card member" data-discord-id="567890123456789012"><div class="avatar" aria-label="Avatar">S</div><div><strong>Support</strong><div class="muted name">Alka</div></div></div>
-          <div class="col-4 card member" data-discord-id="678901234567890123"><div class="avatar" aria-label="Avatar">P</div><div><strong>PVP</strong><div class="muted name">Vex</div></div></div>
+          <div class="col-4 card member" data-discord-id="1123622103917285418"><div class="avatar" aria-label="Avatar"></div><div><strong>DrNooB_</strong><div class="muted name">Co Leader</div></div></div>
+          <div class="col-4 card member" data-discord-id="234567890123456789"><div class="avatar" aria-label="Avatar"></div><div><strong>Officer</strong><div class="muted name">Astra</div></div></div>
+          <div class="col-4 card member" data-discord-id="345678901234567890"><div class="avatar" aria-label="Avatar"></div><div><strong>Raider</strong><div class="muted name">Rogue</div></div></div>
+          <div class="col-4 card member" data-discord-id="456789012345678901"><div class="avatar" aria-label="Avatar"></div><div><strong>Builder</strong><div class="muted name">Forge</div></div></div>
+          <div class="col-4 card member" data-discord-id="567890123456789012"><div class="avatar" aria-label="Avatar"></div><div><strong>Support</strong><div class="muted name">Alka</div></div></div>
+          <div class="col-4 card member" data-discord-id="678901234567890123"><div class="avatar" aria-label="Avatar"></div><div><strong>PVP</strong><div class="muted name">Vex</div></div></div>
         </div>
       </div>
     </section>
@@ -314,48 +314,22 @@
     }
     if (ip && ip !== 'play.tuo-server.it') fetchStatus(ip);
 
-    // Discord avatar fetcher (no token; uses CDN patterns). Replace data-discord-id with real IDs.
-    async function applyDiscordAvatars(){
+    // Discord avatar fetcher (CDN-only, compatibile con Netlify): usa gli avatar predefiniti del CDN in base all'ID.
+    function applyDiscordAvatars(){
       const members = Array.from(document.querySelectorAll('.member[data-discord-id]'));
-      if (!members.length) return;
-      for (const m of members){
+      members.forEach(m => {
         const id = m.getAttribute('data-discord-id');
         const avatarEl = m.querySelector('.avatar');
-        const nameEl = m.querySelector('.name');
-        const initials = (nameEl?.textContent?.trim()?.[0] || avatarEl.textContent || '?').toUpperCase();
         try {
-          // Try to fetch user data via Discord public API. This may require CORS proxy if served from file://
-          const res = await fetch(`https://discord.com/api/users/${id}`, { headers: { 'X-Requested-With': 'valiance-site' } });
-          if (res.ok){
-            const u = await res.json();
-            let url;
-            if (u.avatar){
-              const ext = u.avatar.startsWith('a_') ? 'gif' : 'png';
-              url = `https://cdn.discordapp.com/avatars/${id}/${u.avatar}.${ext}?size=64`;
-            } else {
-              // default avatar by discriminator hash of id mod 5 (approx). We can map via banner color hash fallback.
-              const n = (BigInt(id) % 6n); // 0..5 supported by Discord now
-              url = `https://cdn.discordapp.com/embed/avatars/${Number(n)}.png`;
-            }
-            avatarEl.style.background = `center / cover no-repeat url('${url}')`;
-            avatarEl.style.border = '1px solid #1f3a5a';
-            avatarEl.textContent = '';
-            avatarEl.setAttribute('aria-label', `Avatar di ${nameEl?.textContent?.trim() || 'utente'}`);
-          } else {
-            // Fallback to default embed avatar
-            const n = (BigInt(id) % 6n);
-            const url = `https://cdn.discordapp.com/embed/avatars/${Number(n)}.png`;
-            avatarEl.style.background = `center / cover no-repeat url('${url}')`;
-            avatarEl.textContent = '';
-          }
-        } catch (e){
-          // Network/CORS fallback
-          const n = (BigInt(id) % 6n);
-          const url = `https://cdn.discordapp.com/embed/avatars/${Number(n)}.png`;
+          const idx = Number(BigInt(id) % 6n); // 0..5
+          const url = `https://cdn.discordapp.com/embed/avatars/${idx}.png`;
           avatarEl.style.background = `center / cover no-repeat url('${url}')`;
-          avatarEl.textContent = initials;
+          avatarEl.style.border = '1px solid #1f3a5a';
+          avatarEl.textContent = '';
+        } catch(e){
+          avatarEl.textContent = '';
         }
-      }
+      });
     }
     applyDiscordAvatars();
   </script>
