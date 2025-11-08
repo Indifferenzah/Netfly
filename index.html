@@ -1,15 +1,243 @@
 <!DOCTYPE html>
 <html lang="it">
-
 <head>
-    <meta http-equiv="refresh"
-        content="0; url=https://discord.com/oauth2/authorize?client_id=1425095938392854540&permissions=8&scope=bot%20applications.commands">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Netfly Clan - Minecraft Gang</title>
+  <meta name="description" content="Sito ufficiale del clan/gang Minecraft Netfly: eventi, roster, regole, galleria e link Discord." />
+  <link rel="icon" href="/favicon.ico" />
+  <style>
+    :root { color-scheme: dark light; --bg:#0b0f14; --panel:#0f1720; --muted:#94a3b8; --brand:#22d3ee; --text:#e6edf3; --border:#1f2937; }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body { margin:0; font-family: system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Helvetica Neue,Arial; background: var(--bg); color: var(--text); }
+    a { color: var(--brand); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    header {
+      position: sticky; top:0; z-index: 50; backdrop-filter: blur(8px);
+      background: linear-gradient(180deg, rgba(11,15,20,.85), rgba(11,15,20,.45)); border-bottom: 1px solid var(--border);
+    }
+    .container { width: min(1100px, 92vw); margin: 0 auto; }
+    .nav { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:14px 0; }
+    .brand { display:flex; align-items:center; gap:10px; font-weight: 700; letter-spacing:.3px; }
+    .logo { width:28px; height:28px; filter: drop-shadow(0 0 8px rgba(34,211,238,.35)); }
+    nav ul { list-style:none; display:flex; gap:14px; padding:0; margin:0; flex-wrap: wrap; }
+    nav a { display:block; padding:8px 12px; border-radius: 10px; border: 1px solid transparent; }
+    nav a:hover { border-color: var(--border); background: rgba(255,255,255,.02); text-decoration: none; }
+
+    .hero { position: relative; isolation: isolate; padding: 80px 0 56px; text-align:center; }
+    .bg-grid { position: absolute; inset: 0; opacity:.17; background-image: radial-gradient(#22d3ee 1px, transparent 1px); background-size: 22px 22px; mask: linear-gradient(#000, rgba(0,0,0,.1)); z-index:-1; }
+    .hero h1 { font-size: clamp(32px, 4vw, 52px); margin:6px 0 10px; line-height:1.05; }
+    .hero p { color: var(--muted); font-size: clamp(15px, 2vw, 18px); margin: 0 auto 18px; max-width: 760px; }
+    .cta { display:flex; gap:10px; justify-content:center; flex-wrap: wrap; }
+    .btn { display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; border:1px solid var(--border); background: linear-gradient(180deg, #0f1720, #0b0f14); color: var(--text); font-weight: 600; }
+    .btn.primary { border-color: #155e75; background: linear-gradient(180deg, #0ea5b7, #0c4a6e); color: #dff8ff; }
+    .btn:hover { filter: brightness(1.05); text-decoration: none; }
+
+    section { padding: 48px 0; }
+    h2 { font-size: clamp(22px, 2.8vw, 28px); margin: 0 0 16px; }
+    .grid { display:grid; gap:16px; grid-template-columns: repeat(12, 1fr); }
+    .card { background: linear-gradient(180deg, var(--panel), rgba(11,15,20,.9)); border:1px solid var(--border); border-radius:14px; padding:16px; }
+    .muted { color: var(--muted); }
+
+    .about p { margin: 0; }
+
+    .roster .member { display:flex; align-items:center; gap:12px; padding:12px; border:1px solid var(--border); border-radius:12px; background: rgba(255,255,255,.02); }
+    .avatar { width:44px; height:44px; border-radius:10px; background:#0b1220; border:1px solid #132033; display:grid; place-items:center; font-weight:700; color:#22d3ee; }
+
+    .events .event { border-left: 3px solid #22d3ee; padding-left:12px; }
+
+    .rules li { margin: 6px 0; }
+
+    .gallery { display:grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap:10px; }
+    .gallery img { width:100%; height:140px; object-fit:cover; border-radius:12px; border:1px solid var(--border); }
+
+    .status .row { display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
+    .badge { display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; border:1px solid var(--border); background: rgba(255,255,255,.03); }
+    .dot { width:10px; height:10px; border-radius:50%; background:#ef4444; box-shadow: 0 0 10px rgba(239,68,68,.7); }
+    .dot.online { background:#22c55e; box-shadow: 0 0 10px rgba(34,197,94,.7); }
+
+    footer { border-top:1px solid var(--border); padding: 22px 0 42px; color: var(--muted); font-size: 14px; }
+
+    /* Responsive columns */
+    .col-12 { grid-column: 1 / -1; }
+    .col-6 { grid-column: span 6; }
+    .col-4 { grid-column: span 4; }
+    @media (max-width: 860px) { .col-6, .col-4 { grid-column: 1 / -1; } }
+  </style>
 </head>
-
 <body>
-    <p>Reindirizzamento in corso... <a
-            href="https://discord.com/oauth2/authorize?client_id=1425095938392854540&permissions=8&scope=bot%20applications.commands">clicca
-            qui se non vieni reindirizzato</a>.</p>
-</body>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <svg class="logo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 12l6.5-6.5L12 8l2.5-2.5L21 12l-2 2-4.5-4.5L12 12l-2.5-2.5L5 14l-2-2z" fill="#22d3ee"/></svg>
+        <span>Netfly Clan</span>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#about">Chi siamo</a></li>
+          <li><a href="#roster">Membri</a></li>
+          <li><a href="#events">Eventi</a></li>
+          <li><a href="#rules">Regole</a></li>
+          <li><a href="#gallery">Galleria</a></li>
+          <li><a href="#status">Server</a></li>
+          <li><a href="#contact">Contatti</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
+  <main>
+    <section class="hero">
+      <div class="bg-grid" aria-hidden="true"></div>
+      <div class="container">
+        <h1>Benvenuto nel Netfly Clan</h1>
+        <p>Clan/Gang Minecraft dedicato a raid, eventi PVP, costruzioni tecniche e community. Unisciti a noi e scala la leaderboard del tuo server.</p>
+        <div class="cta">
+          <a class="btn primary" href="/redirect/">Entra su Discord</a>
+          <a class="btn" href="#about">Scopri di più</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="about">
+      <div class="container grid">
+        <div class="col-6 card">
+          <h2>Chi siamo</h2>
+          <p class="muted">Siamo una squadra affiatata di player competitivi e creativi. Organizziamo tornei interni, sessioni di allenamento PVP e progetti di build su larga scala. Accettiamo sia veterani che nuovi membri motivati.</p>
+        </div>
+        <div class="col-6 card">
+          <h2>Cosa offriamo</h2>
+          <ul class="muted">
+            <li>Struttura ruoli: Leader, Officer, Raider, Builder, Support.</li>
+            <li>Eventi settimanali: scrim PVP, speedrun, UHC, boss raid.</li>
+            <li>Server Discord con bot dedicati, ticket e statistiche.</li>
+            <li>Risorse condivise e schematics per build tecniche.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="roster" class="roster">
+      <div class="container">
+        <h2>Roster</h2>
+        <div class="grid">
+          <div class="col-4 card member"><div class="avatar">L</div><div><strong>Leader</strong><div class="muted">Guidalotta</div></div></div>
+          <div class="col-4 card member"><div class="avatar">O</div><div><strong>Officer</strong><div class="muted">Stratega</div></div></div>
+          <div class="col-4 card member"><div class="avatar">R</div><div><strong>Raider</strong><div class="muted">Assaltatore</div></div></div>
+          <div class="col-4 card member"><div class="avatar">B</div><div><strong>Builder</strong><div class="muted">Architetto</div></div></div>
+          <div class="col-4 card member"><div class="avatar">S</div><div><strong>Support</strong><div class="muted">Alchimista</div></div></div>
+          <div class="col-4 card member"><div class="avatar">P</div><div><strong>PVP</strong><div class="muted">Duelista</div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="events" class="events">
+      <div class="container grid">
+        <div class="col-12"><h2>Eventi in arrivo</h2></div>
+        <div class="col-6 card event"><strong>Raid Night</strong><div class="muted">Ogni venerdì, ore 21:00</div></div>
+        <div class="col-6 card event"><strong>Scrim PVP</strong><div class="muted">Domenica, ore 17:00</div></div>
+        <div class="col-6 card event"><strong>Build Marathon</strong><div class="muted">Sabato, ore 15:00</div></div>
+        <div class="col-6 card event"><strong>UHC Weekly</strong><div class="muted">Mercoledì, ore 20:30</div></div>
+      </div>
+    </section>
+
+    <section id="rules" class="rules">
+      <div class="container card">
+        <h2>Regole</h2>
+        <ol class="muted">
+          <li>Rispetto per tutti i membri e gli avversari.</li>
+          <li>Niente cheat, macro o exploit. Tolleranza zero.</li>
+          <li>Comunicazioni chiare durante gli eventi: usare i canali dedicati.</li>
+          <li>Proteggi le risorse del clan e contribuisci quando possibile.</li>
+          <li>Segui le indicazioni di Leader e Officer durante i raid.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="gallery">
+      <div class="container">
+        <h2>Galleria</h2>
+        <div class="gallery">
+          <img src="https://images.unsplash.com/photo-1610524777140-1b0353f4d0c6?q=80&w=800&auto=format&fit=crop" alt="Build 1" />
+          <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=800&auto=format&fit=crop" alt="Build 2" />
+          <img src="https://images.unsplash.com/photo-1519160538185-8e1b0b84b6f0?q=80&w=800&auto=format&fit=crop" alt="Build 3" />
+          <img src="https://images.unsplash.com/photo-1511512578047-7d55ad02a27b?q=80&w=800&auto=format&fit=crop" alt="Arena PVP" />
+        </div>
+      </div>
+    </section>
+
+    <section id="status" class="status">
+      <div class="container card">
+        <h2>Status Server</h2>
+        <div class="row">
+          <div class="badge"><span class="dot" id="status-dot"></span><span id="status-text">Sconosciuto</span></div>
+          <div class="badge">IP: <strong id="server-ip">play.tuo-server.it</strong></div>
+          <div class="badge">Versione: <strong id="server-version">1.20+</strong></div>
+          <div class="badge">Online: <strong id="players-online">--</strong></div>
+        </div>
+        <p class="muted" style="margin-top:10px">Sostituisci l'IP con il tuo e, se vuoi, collega un'API di status (es. mcsrvstat.us) per aggiornare i dati automaticamente.</p>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container grid">
+        <div class="col-6 card">
+          <h2>Contatti</h2>
+          <p class="muted">Per candidature e collaborazioni usa il nostro Discord.</p>
+          <p>
+            <a class="btn primary" href="/redirect/">Unisciti al Discord</a>
+            <a class="btn" href="mailto:contact@netfly.example">Email</a>
+          </p>
+        </div>
+        <div class="col-6 card">
+          <h2>Social</h2>
+          <p class="muted">Aggiungi i tuoi link social qui sotto.</p>
+          <p>
+            <a class="btn" href="#">YouTube</a>
+            <a class="btn" href="#">Twitch</a>
+            <a class="btn" href="#">TikTok</a>
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div>© <span id="year"></span> Netfly Clan. Non affiliato a Mojang/ Microsoft.</div>
+    </div>
+  </footer>
+
+  <script>
+    // Footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Demo status updater using mcsrvstat.us API if IP is valid
+    const ip = document.getElementById('server-ip').textContent.trim();
+    async function fetchStatus(host) {
+      try {
+        const res = await fetch(`https://api.mcsrvstat.us/3/${encodeURIComponent(host)}`);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        const dot = document.getElementById('status-dot');
+        const text = document.getElementById('status-text');
+        const players = document.getElementById('players-online');
+        if (data?.online) {
+          dot.classList.add('online');
+          text.textContent = 'Online';
+          players.textContent = data.players?.online ?? 0;
+          document.getElementById('server-version').textContent = data.version || 'N/D';
+        } else {
+          dot.classList.remove('online');
+          text.textContent = 'Offline';
+          players.textContent = '--';
+        }
+      } catch (e) {
+        console.warn('Status fetch failed', e);
+      }
+    }
+    if (ip && ip !== 'play.tuo-server.it') fetchStatus(ip);
+  </script>
+</body>
 </html>
