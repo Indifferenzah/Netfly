@@ -952,9 +952,12 @@
               }
             };
             try {
-              const res = await fetch(
-                `/.netlify/functions/get-avatar?id=${encodeURIComponent(id)}`
-              );
+              const endpoint = window.location.hostname.includes("vercel.app")
+                ? `/api/get-avatar?id=${encodeURIComponent(id)}`
+                : `/.netlify/functions/get-avatar?id=${encodeURIComponent(id)}`;
+
+              const res = await fetch(endpoint);
+
               if (!res.ok) return fallback();
               const data = await res.json();
               const url = data?.url;
