@@ -104,6 +104,11 @@
         text-decoration: none;
       }
 
+      /* Center everything by default */
+      main, main section, main .container { text-align: center; }
+      /* Exclude roster section and its content from centering */
+      #roster h4 { text-align: initial; }
+
       .hero {
         position: relative;
         isolation: isolate;
@@ -210,12 +215,14 @@
       .roster .member {
         display: flex;
         align-items: center;
+        justify-content: center;
         gap: 12px;
         padding: 12px;
         border: 1px solid var(--border);
         border-radius: 12px;
         background: rgba(255, 255, 255, 0.02);
         transition: transform 0.12s ease;
+        text-align: center;
       }
       .roster .member:hover {
         transform: translateY(-2px);
@@ -241,6 +248,10 @@
       .rules li {
         margin: 6px 0;
       }
+      /* Center content inside the rules container card only */
+      #rules .container.card {
+        text-align: center;
+      }
 
       .gallery {
         display: grid;
@@ -264,6 +275,11 @@
         flex-wrap: wrap;
         gap: 12px;
         align-items: center;
+        justify-content: center;
+      }
+      /* center entire content of the status card */
+      #status .container.card {
+        text-align: center;
       }
       .badge {
         display: inline-flex;
@@ -346,7 +362,7 @@
         <nav>
           <ul id="nav-links">
             <li><a href="#about">Chi siamo</a></li>
-            <li><a href="#roster">Membri</a></li>
+            <li><a href="#roster">Staff</a></li>
             <li><a href="#events">Eventi</a></li>
             <li><a href="#rules">Regole</a></li>
             <li><a href="#gallery">Galleria</a></li>
@@ -419,11 +435,82 @@
                 <div class="muted name"></div>
               </div>
             </div>
-            <div class="col-4 card member" data-discord-id="234567890123456789">
+            <div class="col-4 card member" data-discord-id="810890907989049384">
               <div class="avatar" aria-label="Avatar"></div>
               <div>
                 <strong>GabriNumberOne</strong>
                 <div class="muted name">CW Organizer</div>
+              </div>
+            </div>
+          </div>
+          <h4>Co Leader</h4>
+          <div class="grid">
+            <div class="col-4 card member" data-discord-id="1375622684343537785">
+              <div class="avatar" aria-label="Avatar"></div>
+              <div>
+                <strong>swityy</strong>
+                <div class="muted name"></div>
+              </div>
+            </div>
+            <div class="col-4 card member" data-discord-id="1123622103917285418">
+              <div class="avatar" aria-label="Avatar"></div>
+              <div>
+                <strong>DrNooB_</strong>
+                <div class="muted name">Main Dev</div>
+              </div>
+            </div>
+          </div>
+          <h4>Moderator</h4>
+          <div class="grid">
+            <div class="col-4 card member">
+              <div>
+                <strong>//</strong>
+                <div class="muted name"></div>
+              </div>
+            </div>
+          </div>
+          <h4>Helper</h4>
+          <div class="grid">
+            <div class="col-4 card member" data-discord-id="559053052150284298">
+              <div class="avatar" aria-label="Avatar"></div>
+              <div>
+                <strong>JustFr4</strong>
+                <div class="muted name">CW Organizer</div>
+              </div>
+            </div>
+            <div class="col-4 card member" data-discord-id="1334535608474931283">
+              <div class="avatar" aria-label="Avatar"></div>
+              <div>
+                <strong>palle361</strong>
+                <div class="muted name"></div>
+              </div>
+            </div>
+            <div class="col-4 card member" data-discord-id="802855882215784468">
+              <div class="avatar" aria-label="Avatar"></div>
+              <div>
+                <strong>Buonaseragiacomo</strong>
+                <div class="muted name"></div>
+              </div>
+            </div>
+            <div class="col-4 card member" data-discord-id="1180919961540120687">
+              <div class="avatar" aria-label="Avatar"></div>
+              <div>
+                <strong>xanaxx1</strong>
+                <div class="muted name">Punjabi</div>
+              </div>
+            </div>
+            <div class="col-4 card member" data-discord-id="943188659820191755">
+              <div class="avatar" aria-label="Avatar"></div>
+              <div>
+                <strong>Pellons</strong>
+                <div class="muted name"></div>
+              </div>
+            </div>
+            <div class="col-4 card member" data-discord-id="1414139880006619156">
+              <div class="avatar" aria-label="Avatar"></div>
+              <div>
+                <strong>SerenityCode</strong>
+                <div class="muted name"></div>
               </div>
             </div>
           </div>
@@ -432,22 +519,10 @@
 
       <section id="events" class="events">
         <div class="container grid">
-          <div class="col-12"><h2>Eventi in arrivo</h2></div>
+          <div class="col-12"><h2>Eventi</h2></div>
           <div class="col-6 card event">
-            <strong>Raid Night</strong>
+            <strong>Balls Busting</strong>
             <div class="muted">Venerdì, ore 21:00</div>
-          </div>
-          <div class="col-6 card event">
-            <strong>Scrim PVP</strong>
-            <div class="muted">Domenica, ore 17:00</div>
-          </div>
-          <div class="col-6 card event">
-            <strong>Build Marathon</strong>
-            <div class="muted">Sabato, ore 15:00</div>
-          </div>
-          <div class="col-6 card event">
-            <strong>UHC Weekly</strong>
-            <div class="muted">Mercoledì, ore 20:30</div>
           </div>
         </div>
       </section>
@@ -456,11 +531,13 @@
         <div class="container card">
           <h2>Regole</h2>
           <ol class="muted">
-            <li>Rispetto per i compagni e avversari; no tossicità.</li>
-            <li>Vietati cheat, macro, exploit. Ban immediato.</li>
-            <li>Usa i canali corretti e ascolta i call durante i raid.</li>
-            <li>Contribuisci alle risorse del clan in base al ruolo.</li>
-            <li>Trasparenza: segnala problemi agli Officer.</li>
+            <li><strong>Rispetto</strong>: Tratta tutti con rispetto. Niente insulti, discriminazioni o molestie.</li>
+            <li><strong>Niente spam</strong>: Evita messaggi ripetuti, emoji in eccesso o tag inutili.</li>
+            <li><strong>Contenuti appropriati</strong>: Vietati contenuti NSFW, gore o illegali.</li>
+            <li><strong>Canali giusti</strong>: Scrivi nei canali corretti e rispetta il tema di ciascuno.</li>
+            <li><strong>No pubblicità</strong>: Non condividere link, server o social senza permesso dello staff.</li>
+            <li><strong>Sicurezza</strong>: Non condividere dati personali e segnala comportamenti sospetti.</li>
+            <li><strong>Staff</strong>: Rispetta le decisioni dello staff. Se hai dubbi, apri un ticket.</li>
           </ol>
         </div>
       </section>
@@ -470,20 +547,8 @@
           <h2>Galleria</h2>
           <div class="gallery">
             <img
-              src="https://images.unsplash.com/photo-1610524777140-1b0353f4d0c6?q=80&w=800&auto=format&fit=crop"
-              alt="Build 1"
-            />
-            <img
-              src="https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=800&auto=format&fit=crop"
-              alt="Build 2"
-            />
-            <img
-              src="https://images.unsplash.com/photo-1519160538185-8e1b0b84b6f0?q=80&w=800&auto=format&fit=crop"
-              alt="Build 3"
-            />
-            <img
-              src="https://images.unsplash.com/photo-1511512578047-7d55ad02a27b?q=80&w=800&auto=format&fit=crop"
-              alt="Arena PVP"
+              src="https://i.imgur.com/QJN3H6n.png"
+              alt="Screen con Ole"
             />
           </div>
         </div>
@@ -508,8 +573,7 @@
             </div>
           </div>
           <p class="muted" style="margin-top: 10px">
-            Imposta il tuo IP server. Lo stato usa l'API mcsrvstat.us quando
-            l'IP è diverso da quello di default.
+            Entra adesso e gioca con noi su <strong>play.coralmc.it</strong>!
           </p>
         </div>
       </section>
