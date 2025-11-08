@@ -3,54 +3,59 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Netfly Clan - Minecraft Gang</title>
-  <meta name="description" content="Sito ufficiale del clan/gang Minecraft Netfly: eventi, roster, regole, galleria e link Discord." />
+  <title>Valiance - Minecraft Clan/Gang</title>
+  <meta name="description" content="Sito ufficiale di Valiance, clan/gang Minecraft: eventi, roster, regole, galleria e invito Discord." />
   <link rel="icon" href="/favicon.ico" />
   <style>
-    :root { color-scheme: dark light; --bg:#0b0f14; --panel:#0f1720; --muted:#94a3b8; --brand:#22d3ee; --text:#e6edf3; --border:#1f2937; }
+    :root {
+      color-scheme: dark light;
+      --bg:#070b10; --panel:#0b1220; --muted:#8aa0b8; --brand:#22d3ee; --brand-2:#8b5cf6; --text:#e6edf3; --border:#132033;
+      --glow: 0 0 24px rgba(34,211,238,.25), 0 0 44px rgba(139,92,246,.15);
+    }
     * { box-sizing: border-box; }
-    html, body { height: 100%; }
-    body { margin:0; font-family: system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Helvetica Neue,Arial; background: var(--bg); color: var(--text); }
+    html, body { height:100%; scroll-behavior: smooth; }
+    body { margin:0; font-family: system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Helvetica Neue,Arial; background: var(--bg); color: var(--text); overflow-x: hidden; }
     a { color: var(--brand); text-decoration: none; }
     a:hover { text-decoration: underline; }
-    header {
-      position: sticky; top:0; z-index: 50; backdrop-filter: blur(8px);
-      background: linear-gradient(180deg, rgba(11,15,20,.85), rgba(11,15,20,.45)); border-bottom: 1px solid var(--border);
-    }
-    .container { width: min(1100px, 92vw); margin: 0 auto; }
+
+    header { position: sticky; top:0; z-index: 50; backdrop-filter: blur(10px); background: linear-gradient(180deg, rgba(7,11,16,.85), rgba(7,11,16,.45)); border-bottom: 1px solid var(--border); }
+    .container { width: min(1200px, 92vw); margin: 0 auto; }
     .nav { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:14px 0; }
-    .brand { display:flex; align-items:center; gap:10px; font-weight: 700; letter-spacing:.3px; }
-    .logo { width:28px; height:28px; filter: drop-shadow(0 0 8px rgba(34,211,238,.35)); }
-    nav ul { list-style:none; display:flex; gap:14px; padding:0; margin:0; flex-wrap: wrap; }
-    nav a { display:block; padding:8px 12px; border-radius: 10px; border: 1px solid transparent; }
-    nav a:hover { border-color: var(--border); background: rgba(255,255,255,.02); text-decoration: none; }
+    .brand { display:flex; align-items:center; gap:10px; font-weight: 800; letter-spacing:.4px; }
+    .logo { width:28px; height:28px; filter: drop-shadow(0 0 10px rgba(34,211,238,.45)); }
+    nav ul { list-style:none; display:flex; gap:6px; padding:0; margin:0; flex-wrap: wrap; }
+    nav a { display:block; padding:10px 12px; border-radius: 10px; border: 1px solid transparent; transition: .2s; }
+    nav a.active, nav a:hover { border-color: var(--border); background: rgba(255,255,255,.03); text-decoration: none; }
 
-    .hero { position: relative; isolation: isolate; padding: 80px 0 56px; text-align:center; }
-    .bg-grid { position: absolute; inset: 0; opacity:.17; background-image: radial-gradient(#22d3ee 1px, transparent 1px); background-size: 22px 22px; mask: linear-gradient(#000, rgba(0,0,0,.1)); z-index:-1; }
-    .hero h1 { font-size: clamp(32px, 4vw, 52px); margin:6px 0 10px; line-height:1.05; }
-    .hero p { color: var(--muted); font-size: clamp(15px, 2vw, 18px); margin: 0 auto 18px; max-width: 760px; }
-    .cta { display:flex; gap:10px; justify-content:center; flex-wrap: wrap; }
-    .btn { display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; border:1px solid var(--border); background: linear-gradient(180deg, #0f1720, #0b0f14); color: var(--text); font-weight: 600; }
-    .btn.primary { border-color: #155e75; background: linear-gradient(180deg, #0ea5b7, #0c4a6e); color: #dff8ff; }
-    .btn:hover { filter: brightness(1.05); text-decoration: none; }
+    .hero { position: relative; isolation: isolate; padding: 90px 0 70px; text-align:center; overflow: hidden; }
+    .bg-grid { position: absolute; inset: -20%; opacity:.18; background-image: radial-gradient(#22d3ee 1px, transparent 1px); background-size: 22px 22px; mask: linear-gradient(#000, rgba(0,0,0,.1)); z-index:-2; transform: translateZ(0); }
+    canvas#fx { position:absolute; inset:0; z-index:-1; filter: blur(.2px); }
+    .hero h1 { font-size: clamp(34px, 5vw, 64px); margin:6px 0 10px; line-height:1.02; text-shadow: var(--glow); }
+    .hero p { color: var(--muted); font-size: clamp(15px, 2vw, 18px); margin: 0 auto 20px; max-width: 820px; }
+    .cta { display:flex; gap:12px; justify-content:center; flex-wrap: wrap; }
+    .btn { display:inline-flex; align-items:center; gap:8px; padding:11px 14px; border-radius:12px; border:1px solid var(--border); background: linear-gradient(180deg, #0f1720, #0b0f14); color: var(--text); font-weight: 700; letter-spacing:.2px; transition: transform .12s ease, filter .15s; }
+    .btn.primary { border-color: #155e75; background: linear-gradient(180deg, #0ea5b7, #0c4a6e); color: #dff8ff; box-shadow: 0 8px 30px rgba(14,165,183,.25); }
+    .btn:hover { filter: brightness(1.06); text-decoration: none; transform: translateY(-1px); }
 
-    section { padding: 48px 0; }
-    h2 { font-size: clamp(22px, 2.8vw, 28px); margin: 0 0 16px; }
+    section { padding: 56px 0; }
+    h2 { font-size: clamp(22px, 2.8vw, 30px); margin: 0 0 16px; }
     .grid { display:grid; gap:16px; grid-template-columns: repeat(12, 1fr); }
-    .card { background: linear-gradient(180deg, var(--panel), rgba(11,15,20,.9)); border:1px solid var(--border); border-radius:14px; padding:16px; }
+    .card { background: linear-gradient(180deg, var(--panel), rgba(11,15,20,.9)); border:1px solid var(--border); border-radius:14px; padding:16px; box-shadow: inset 0 1px 0 rgba(255,255,255,.04); }
     .muted { color: var(--muted); }
 
-    .about p { margin: 0; }
+    .about .stat { display:flex; align-items:center; gap:12px; padding:12px; border:1px dashed var(--border); border-radius:12px; background: rgba(255,255,255,.02); }
 
-    .roster .member { display:flex; align-items:center; gap:12px; padding:12px; border:1px solid var(--border); border-radius:12px; background: rgba(255,255,255,.02); }
-    .avatar { width:44px; height:44px; border-radius:10px; background:#0b1220; border:1px solid #132033; display:grid; place-items:center; font-weight:700; color:#22d3ee; }
+    .roster .member { display:flex; align-items:center; gap:12px; padding:12px; border:1px solid var(--border); border-radius:12px; background: rgba(255,255,255,.02); transition: transform .12s ease; }
+    .roster .member:hover { transform: translateY(-2px); }
+    .avatar { width:44px; height:44px; border-radius:10px; background:#0b1220; border:1px solid #132033; display:grid; place-items:center; font-weight:800; color:#22d3ee; box-shadow: 0 6px 18px rgba(34,211,238,.15); }
 
     .events .event { border-left: 3px solid #22d3ee; padding-left:12px; }
 
     .rules li { margin: 6px 0; }
 
     .gallery { display:grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap:10px; }
-    .gallery img { width:100%; height:140px; object-fit:cover; border-radius:12px; border:1px solid var(--border); }
+    .gallery img { width:100%; height:160px; object-fit:cover; border-radius:12px; border:1px solid var(--border); transition: transform .2s; }
+    .gallery img:hover { transform: scale(1.02); }
 
     .status .row { display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
     .badge { display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; border:1px solid var(--border); background: rgba(255,255,255,.03); }
@@ -61,8 +66,10 @@
 
     /* Responsive columns */
     .col-12 { grid-column: 1 / -1; }
+    .col-8 { grid-column: span 8; }
     .col-6 { grid-column: span 6; }
     .col-4 { grid-column: span 4; }
+    @media (max-width: 980px) { .col-8 { grid-column: 1 / -1; } }
     @media (max-width: 860px) { .col-6, .col-4 { grid-column: 1 / -1; } }
   </style>
 </head>
@@ -70,11 +77,11 @@
   <header>
     <div class="container nav">
       <div class="brand">
-        <svg class="logo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 12l6.5-6.5L12 8l2.5-2.5L21 12l-2 2-4.5-4.5L12 12l-2.5-2.5L5 14l-2-2z" fill="#22d3ee"/></svg>
-        <span>Netfly Clan</span>
+        <svg class="logo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#22d3ee"/><stop offset="100%" stop-color="#8b5cf6"/></linearGradient></defs><path d="M3 12l6.5-6.5L12 8l2.5-2.5L21 12l-2 2-4.5-4.5L12 12l-2.5-2.5L5 14l-2-2z" fill="url(#g)"/></svg>
+        <span>Valiance</span>
       </div>
       <nav>
-        <ul>
+        <ul id="nav-links">
           <li><a href="#about">Chi siamo</a></li>
           <li><a href="#roster">Membri</a></li>
           <li><a href="#events">Eventi</a></li>
@@ -88,13 +95,14 @@
   </header>
 
   <main>
-    <section class="hero">
+    <section class="hero" id="home">
       <div class="bg-grid" aria-hidden="true"></div>
-      <div class="container">
-        <h1>Benvenuto nel Netfly Clan</h1>
-        <p>Clan/Gang Minecraft dedicato a raid, eventi PVP, costruzioni tecniche e community. Unisciti a noi e scala la leaderboard del tuo server.</p>
-        <div class="cta">
-          <a class="btn primary" href="/redirect/">Entra su Discord</a>
+      <canvas id="fx" aria-hidden="true"></canvas>
+      <div class="container" id="parallax">
+        <h1 data-depth="0.15">Valiance</h1>
+        <p data-depth="0.2">Clan/Gang Minecraft orientato a PVP competitivo, raid coordinati e progetti di build avanzati. Unisciti alla nostra community e conquista i server.</p>
+        <div class="cta" data-depth="0.25">
+          <a class="btn primary" href="https://discord.gg/NACE9V7kfx" target="_blank" rel="noopener">Entra su Discord</a>
           <a class="btn" href="#about">Scopri di più</a>
         </div>
       </div>
@@ -102,18 +110,14 @@
 
     <section id="about" class="about">
       <div class="container grid">
-        <div class="col-6 card">
+        <div class="col-8 card">
           <h2>Chi siamo</h2>
-          <p class="muted">Siamo una squadra affiatata di player competitivi e creativi. Organizziamo tornei interni, sessioni di allenamento PVP e progetti di build su larga scala. Accettiamo sia veterani che nuovi membri motivati.</p>
+          <p class="muted">Siamo una squadra ambiziosa e organizzata. Pianifichiamo raid in team, allenamenti PVP, speedrun evento e build tecniche gestite con schematics condivisi. Valutiamo i candidati in base ad attitudine, comunicazione e obiettivi.</p>
         </div>
-        <div class="col-6 card">
-          <h2>Cosa offriamo</h2>
-          <ul class="muted">
-            <li>Struttura ruoli: Leader, Officer, Raider, Builder, Support.</li>
-            <li>Eventi settimanali: scrim PVP, speedrun, UHC, boss raid.</li>
-            <li>Server Discord con bot dedicati, ticket e statistiche.</li>
-            <li>Risorse condivise e schematics per build tecniche.</li>
-          </ul>
+        <div class="col-4">
+          <div class="stat"><strong>50+</strong> Membri attivi</div>
+          <div class="stat" style="margin-top:10px"><strong>Top 3</strong> Tornei community</div>
+          <div class="stat" style="margin-top:10px"><strong>1.20+</strong> Versione</div>
         </div>
       </div>
     </section>
@@ -122,12 +126,12 @@
       <div class="container">
         <h2>Roster</h2>
         <div class="grid">
-          <div class="col-4 card member"><div class="avatar">L</div><div><strong>Leader</strong><div class="muted">Guidalotta</div></div></div>
-          <div class="col-4 card member"><div class="avatar">O</div><div><strong>Officer</strong><div class="muted">Stratega</div></div></div>
-          <div class="col-4 card member"><div class="avatar">R</div><div><strong>Raider</strong><div class="muted">Assaltatore</div></div></div>
-          <div class="col-4 card member"><div class="avatar">B</div><div><strong>Builder</strong><div class="muted">Architetto</div></div></div>
-          <div class="col-4 card member"><div class="avatar">S</div><div><strong>Support</strong><div class="muted">Alchimista</div></div></div>
-          <div class="col-4 card member"><div class="avatar">P</div><div><strong>PVP</strong><div class="muted">Duelista</div></div></div>
+          <div class="col-4 card member" data-discord-id="1123622103917285418"><div class="avatar" aria-label="Avatar">L</div><div><strong>DrNooB_</strong><div class="muted name">Co Leader</div></div></div>
+          <div class="col-4 card member" data-discord-id="234567890123456789"><div class="avatar" aria-label="Avatar">O</div><div><strong>Officer</strong><div class="muted name">Astra</div></div></div>
+          <div class="col-4 card member" data-discord-id="345678901234567890"><div class="avatar" aria-label="Avatar">R</div><div><strong>Raider</strong><div class="muted name">Rogue</div></div></div>
+          <div class="col-4 card member" data-discord-id="456789012345678901"><div class="avatar" aria-label="Avatar">B</div><div><strong>Builder</strong><div class="muted name">Forge</div></div></div>
+          <div class="col-4 card member" data-discord-id="567890123456789012"><div class="avatar" aria-label="Avatar">S</div><div><strong>Support</strong><div class="muted name">Alka</div></div></div>
+          <div class="col-4 card member" data-discord-id="678901234567890123"><div class="avatar" aria-label="Avatar">P</div><div><strong>PVP</strong><div class="muted name">Vex</div></div></div>
         </div>
       </div>
     </section>
@@ -135,7 +139,7 @@
     <section id="events" class="events">
       <div class="container grid">
         <div class="col-12"><h2>Eventi in arrivo</h2></div>
-        <div class="col-6 card event"><strong>Raid Night</strong><div class="muted">Ogni venerdì, ore 21:00</div></div>
+        <div class="col-6 card event"><strong>Raid Night</strong><div class="muted">Venerdì, ore 21:00</div></div>
         <div class="col-6 card event"><strong>Scrim PVP</strong><div class="muted">Domenica, ore 17:00</div></div>
         <div class="col-6 card event"><strong>Build Marathon</strong><div class="muted">Sabato, ore 15:00</div></div>
         <div class="col-6 card event"><strong>UHC Weekly</strong><div class="muted">Mercoledì, ore 20:30</div></div>
@@ -146,11 +150,11 @@
       <div class="container card">
         <h2>Regole</h2>
         <ol class="muted">
-          <li>Rispetto per tutti i membri e gli avversari.</li>
-          <li>Niente cheat, macro o exploit. Tolleranza zero.</li>
-          <li>Comunicazioni chiare durante gli eventi: usare i canali dedicati.</li>
-          <li>Proteggi le risorse del clan e contribuisci quando possibile.</li>
-          <li>Segui le indicazioni di Leader e Officer durante i raid.</li>
+          <li>Rispetto per i compagni e avversari; no tossicità.</li>
+          <li>Vietati cheat, macro, exploit. Ban immediato.</li>
+          <li>Usa i canali corretti e ascolta i call durante i raid.</li>
+          <li>Contribuisci alle risorse del clan in base al ruolo.</li>
+          <li>Trasparenza: segnala problemi agli Officer.</li>
         </ol>
       </div>
     </section>
@@ -172,11 +176,11 @@
         <h2>Status Server</h2>
         <div class="row">
           <div class="badge"><span class="dot" id="status-dot"></span><span id="status-text">Sconosciuto</span></div>
-          <div class="badge">IP: <strong id="server-ip">play.tuo-server.it</strong></div>
+          <div class="badge">IP: <strong id="server-ip">play.coralmc.it</strong></div>
           <div class="badge">Versione: <strong id="server-version">1.20+</strong></div>
           <div class="badge">Online: <strong id="players-online">--</strong></div>
         </div>
-        <p class="muted" style="margin-top:10px">Sostituisci l'IP con il tuo e, se vuoi, collega un'API di status (es. mcsrvstat.us) per aggiornare i dati automaticamente.</p>
+        <p class="muted" style="margin-top:10px">Imposta il tuo IP server. Lo stato usa l'API mcsrvstat.us quando l'IP è diverso da quello di default.</p>
       </div>
     </section>
 
@@ -184,10 +188,9 @@
       <div class="container grid">
         <div class="col-6 card">
           <h2>Contatti</h2>
-          <p class="muted">Per candidature e collaborazioni usa il nostro Discord.</p>
+          <p class="muted">Candidature e collaborazioni sul nostro Discord.</p>
           <p>
-            <a class="btn primary" href="/redirect/">Unisciti al Discord</a>
-            <a class="btn" href="mailto:contact@netfly.example">Email</a>
+            <a class="btn primary" href="https://discord.gg/NACE9V7kfx" target="_blank" rel="noopener">Unisciti al Discord</a>
           </p>
         </div>
         <div class="col-6 card">
@@ -205,7 +208,7 @@
 
   <footer>
     <div class="container">
-      <div>© <span id="year"></span> Netfly Clan. Non affiliato a Mojang/ Microsoft.</div>
+      <div>© <span id="year"></span> Valiance. Non affiliato a Mojang/Microsoft.</div>
     </div>
   </footer>
 
@@ -213,8 +216,80 @@
     // Footer year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Demo status updater using mcsrvstat.us API if IP is valid
-    const ip = document.getElementById('server-ip').textContent.trim();
+    // Smooth scroll + active link highlight
+    const sections = Array.from(document.querySelectorAll('main section[id]'));
+    const navLinks = Array.from(document.querySelectorAll('#nav-links a'));
+    const setActive = (id) => navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) setActive(e.target.id); });
+    }, { threshold: 0.55 });
+    sections.forEach(s => obs.observe(s));
+
+    // Parallax for hero content
+    const parallax = document.getElementById('parallax');
+    const depthNodes = parallax ? Array.from(parallax.querySelectorAll('[data-depth]')) : [];
+    let mouseX = 0, mouseY = 0; let rafId = 0;
+    function onMove(e){
+      const rect = document.body.getBoundingClientRect();
+      mouseX = (e.clientX - rect.width/2) / rect.width;
+      mouseY = (e.clientY - window.innerHeight/2) / window.innerHeight;
+      if (!rafId) rafId = requestAnimationFrame(updateParallax);
+    }
+    function updateParallax(){
+      depthNodes.forEach(node => {
+        const d = parseFloat(node.dataset.depth || '0');
+        const tx = -mouseX * d * 30; // px
+        const ty = -mouseY * d * 30;
+        node.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
+      });
+      rafId = 0;
+    }
+    window.addEventListener('mousemove', onMove, { passive: true });
+
+    // Canvas particles reacting to mouse
+    const canvas = document.getElementById('fx');
+    const ctx = canvas.getContext('2d');
+    let W, H, particles = [];
+    function resize(){ W = canvas.width = innerWidth; H = canvas.height = document.querySelector('.hero').offsetHeight; }
+    window.addEventListener('resize', () => { resize(); spawn(true); });
+    function rand(a,b){ return Math.random()*(b-a)+a; }
+    function colorMix(t){
+      return `rgba(${34 + t* (139-34)}, ${211 - t* (211-92)}, ${238 - t* (238-246)}, ${0.16 + 0.12*Math.sin(performance.now()/800)})`;
+    }
+    function spawn(reset=false){
+      const count = Math.max(60, Math.floor(W/20));
+      if (reset) particles = [];
+      while(particles.length < count){
+        particles.push({ x: rand(0,W), y: rand(0,H), vx: rand(-.2,.2), vy: rand(.15,.45), r: rand(.6,2.2) });
+      }
+    }
+    let mx = 0, my = 0;
+    window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+    function step(){
+      ctx.clearRect(0,0,W,H);
+      const t = (Math.sin(performance.now()/1200)+1)/2;
+      particles.forEach(p => {
+        const dx = (mx - p.x), dy = (my - p.y);
+        const dist = Math.hypot(dx,dy) || 1;
+        const force = Math.min(40/dist, 0.12);
+        p.vx += force * dx/dist * 0.02;
+        p.vy += force * dy/dist * 0.02;
+        p.x += p.vx; p.y += p.vy;
+        p.vx *= 0.985; p.vy *= 0.985;
+        if (p.x < -10) p.x = W+10; if (p.x > W+10) p.x = -10;
+        if (p.y < -10) p.y = H+10; if (p.y > H+10) p.y = -10;
+        ctx.beginPath();
+        ctx.fillStyle = colorMix(t);
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+        ctx.fill();
+      });
+      requestAnimationFrame(step);
+    }
+    resize(); spawn(true); step();
+
+    // Server status fetch via mcsrvstat.us when IP changed
+    const ipEl = document.getElementById('server-ip');
+    const ip = ipEl.textContent.trim();
     async function fetchStatus(host) {
       try {
         const res = await fetch(`https://api.mcsrvstat.us/3/${encodeURIComponent(host)}`);
@@ -238,6 +313,51 @@
       }
     }
     if (ip && ip !== 'play.tuo-server.it') fetchStatus(ip);
+
+    // Discord avatar fetcher (no token; uses CDN patterns). Replace data-discord-id with real IDs.
+    async function applyDiscordAvatars(){
+      const members = Array.from(document.querySelectorAll('.member[data-discord-id]'));
+      if (!members.length) return;
+      for (const m of members){
+        const id = m.getAttribute('data-discord-id');
+        const avatarEl = m.querySelector('.avatar');
+        const nameEl = m.querySelector('.name');
+        const initials = (nameEl?.textContent?.trim()?.[0] || avatarEl.textContent || '?').toUpperCase();
+        try {
+          // Try to fetch user data via Discord public API. This may require CORS proxy if served from file://
+          const res = await fetch(`https://discord.com/api/users/${id}`, { headers: { 'X-Requested-With': 'valiance-site' } });
+          if (res.ok){
+            const u = await res.json();
+            let url;
+            if (u.avatar){
+              const ext = u.avatar.startsWith('a_') ? 'gif' : 'png';
+              url = `https://cdn.discordapp.com/avatars/${id}/${u.avatar}.${ext}?size=64`;
+            } else {
+              // default avatar by discriminator hash of id mod 5 (approx). We can map via banner color hash fallback.
+              const n = (BigInt(id) % 6n); // 0..5 supported by Discord now
+              url = `https://cdn.discordapp.com/embed/avatars/${Number(n)}.png`;
+            }
+            avatarEl.style.background = `center / cover no-repeat url('${url}')`;
+            avatarEl.style.border = '1px solid #1f3a5a';
+            avatarEl.textContent = '';
+            avatarEl.setAttribute('aria-label', `Avatar di ${nameEl?.textContent?.trim() || 'utente'}`);
+          } else {
+            // Fallback to default embed avatar
+            const n = (BigInt(id) % 6n);
+            const url = `https://cdn.discordapp.com/embed/avatars/${Number(n)}.png`;
+            avatarEl.style.background = `center / cover no-repeat url('${url}')`;
+            avatarEl.textContent = '';
+          }
+        } catch (e){
+          // Network/CORS fallback
+          const n = (BigInt(id) % 6n);
+          const url = `https://cdn.discordapp.com/embed/avatars/${Number(n)}.png`;
+          avatarEl.style.background = `center / cover no-repeat url('${url}')`;
+          avatarEl.textContent = initials;
+        }
+      }
+    }
+    applyDiscordAvatars();
   </script>
 </body>
 </html>
