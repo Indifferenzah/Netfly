@@ -26,9 +26,14 @@ export default async function handler(req, res) {
     }
 
     const user = await resp.json();
-    const url = user.avatar
-      ? `https://cdn.discordapp.com/avatars/${id}/${user.avatar.startsWith('a_') ? 'gif' : 'png'}?size=128`
-      : `https://cdn.discordapp.com/embed/avatars/${Number((BigInt(id) >> 22n) % 6n)}.png`;
+    let url;
+    if (user.avatar) {
+      const ext = user.avatar.startsWith('a_') ? 'gif' : 'png';
+      url = `https://cdn.discordapp.com/avatars/${id}/${user.avatar}.${ext}?size=128`;
+    } else {
+      const idx = Number((BigInt(id) >> 22n) % 6n);
+      url = `https://cdn.discordapp.com/embed/avatars/${idx}.png`;
+    }
 
     return res.status(200).json({ url });
   } catch (e) {
