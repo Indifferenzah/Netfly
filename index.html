@@ -801,11 +801,11 @@
       </section>
 
       <section id="contact">
-        <div class="container">
-          <div class="card">
-            <h2>Contatti</h2>
+        <div class="container grid">
+          <div class="col-6 card">
+            <h2>Discord</h2>
             <p class="muted">
-              Candidature e collaborazioni sul nostro Discord.
+              Unisciti ai nostri server Discord per candidature e collaborazioni.
             </p>
             <p>
               <button class="btn primary" onclick="window.open('/redirectclan', '_blank')">
@@ -815,15 +815,21 @@
                 Discord Gang
               </button>
             </p>
-            <h3>Invia una Richiesta</h3>
+          </div>
+          <div class="col-6 card">
+            <h2>Invia una Richiesta</h2>
             <form id="contact-form">
+              <div style="margin-bottom: 10px;">
+                <label for="ign" style="display: block; margin-bottom: 5px; color: var(--text);">IGN (In Game Name):</label>
+                <input type="text" id="ign" name="ign" required style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--text);">
+              </div>
+              <div style="margin-bottom: 10px;">
+                <label for="discord_username" style="display: block; margin-bottom: 5px; color: var(--text);">Username Discord:</label>
+                <input type="text" id="discord_username" name="discord_username" required style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--text);">
+              </div>
               <div style="margin-bottom: 10px;">
                 <label for="name" style="display: block; margin-bottom: 5px; color: var(--text);">Nome:</label>
                 <input type="text" id="name" name="name" required style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--text);">
-              </div>
-              <div style="margin-bottom: 10px;">
-                <label for="email" style="display: block; margin-bottom: 5px; color: var(--text);">Email:</label>
-                <input type="email" id="email" name="email" required style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--text);">
               </div>
               <div style="margin-bottom: 10px;">
                 <label for="type" style="display: block; margin-bottom: 5px; color: var(--text);">Tipo Richiesta:</label>
@@ -1196,7 +1202,10 @@
           const data = Object.fromEntries(formData);
           responseEl.textContent = 'Invio in corso...';
           try {
-            const res = await fetch('/.netlify/functions/submit-contact', {
+            const endpoint = window.location.hostname.includes('vercel.app')
+              ? '/api/submit-contact'
+              : '/.netlify/functions/submit-contact';
+            const res = await fetch(endpoint, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(data)
