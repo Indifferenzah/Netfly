@@ -575,7 +575,6 @@
       }
     }
 
-    /* Stile del pulsante */
     .btn {
       display: inline-block;
       padding: 12px 24px;
@@ -587,23 +586,19 @@
       cursor: pointer;
     }
 
-    /* Variante "primary" */
     .btn.primary {
       background-color: #5865F2;
-      /* colore Discord */
       color: white;
       border: none;
       box-shadow: 0 4px 14px rgba(88, 101, 242, 0.4);
     }
 
-    /* Effetto hover */
     .btn.primary:hover {
       background-color: #4752C4;
       box-shadow: 0 6px 18px rgba(88, 101, 242, 0.6);
       transform: translateY(-2px);
     }
 
-    /* Effetto click */
     .btn.primary:active {
       transform: translateY(0);
       box-shadow: 0 3px 10px rgba(88, 101, 242, 0.4);
@@ -955,7 +950,7 @@
     function updateParallax() {
       depthNodes.forEach((node) => {
         const d = parseFloat(node.dataset.depth || "0");
-        const tx = -mouseX * d * 30; // px
+        const tx = -mouseX * d * 30;
         const ty = -mouseY * d * 30;
         node.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
       });
@@ -1025,29 +1020,25 @@
         });
       }
     });
-    function step() {
-      ctx.clearRect(0, 0, W, H);
-      const t = (Math.sin(performance.now() / 1200) + 1) / 2;
-      particles.forEach((p) => {
-        const dx = mx - p.x,
-          dy = my - p.y;
-        const dist = Math.hypot(dx, dy) || 1;
-        const force = Math.min(40 / dist, 0.12);
-        p.vx += ((force * dx) / dist) * 0.02;
-        p.vy += ((force * dy) / dist) * 0.02;
-        p.x += p.vx;
-        p.y += p.vy;
-        p.vx *= 0.985;
-        p.vy *= 0.985;
-        if (p.x < -10) p.x = W + 10;
-        if (p.x > W + 10) p.x = -10;
-        if (p.y < -10) p.y = H + 10;
-        if (p.y > H + 10) p.y = -10;
-        ctx.beginPath();
-        ctx.fillStyle = colorMix(t);
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fill();
-      });
+      function step() {
+        ctx.clearRect(0, 0, W, H);
+        const t = (Math.sin(performance.now() / 1200) + 1) / 2;
+        particles.forEach((p) => {
+          p.vx += (Math.random() - 0.5) * 0.02;
+          p.vy += 0.01 + (Math.random() - 0.5) * 0.01;
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vx *= 0.95;
+          p.vy *= 0.95;
+          if (p.x < -10) p.x = W + 10;
+          if (p.x > W + 10) p.x = -10;
+          if (p.y < -10) p.y = H + 10;
+          if (p.y > H + 10) p.y = -10;
+          ctx.beginPath();
+          ctx.fillStyle = colorMix(t);
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+        });
       clickParticles = clickParticles.filter((p) => {
         p.x += p.vx;
         p.y += p.vy;

@@ -656,16 +656,12 @@
         ctx.clearRect(0, 0, W, H);
         const t = (Math.sin(performance.now() / 1200) + 1) / 2;
         particles.forEach((p) => {
-          const dx = mx - p.x,
-            dy = my - p.y;
-          const dist = Math.hypot(dx, dy) || 1;
-          const force = Math.min(40 / dist, 0.12);
-          p.vx += ((force * dx) / dist) * 0.02;
-          p.vy += ((force * dy) / dist) * 0.02;
+          p.vx += (Math.random() - 0.5) * 0.02;
+          p.vy += 0.01 + (Math.random() - 0.5) * 0.01;
           p.x += p.vx;
           p.y += p.vy;
-          p.vx *= 0.985;
-          p.vy *= 0.985;
+          p.vx *= 0.95;
+          p.vy *= 0.95;
           if (p.x < -10) p.x = W + 10;
           if (p.x > W + 10) p.x = -10;
           if (p.y < -10) p.y = H + 10;
