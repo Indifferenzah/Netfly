@@ -1,583 +1,1217 @@
 <!DOCTYPE html>
 <html lang="it">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Account | Valiance</title>
-    <meta
-      name="description"
-      content="Gestisci le tue richieste di contatto con Valiance."
-    />
-    <link rel="icon" href="/pfp.png" />
-    <style>
-      :root {
-        color-scheme: dark light;
-        --bg: #070b10;
-        --panel: #0b1220;
-        --muted: #8aa0b8;
-        --brand: #22d3ee;
-        --brand-2: #8b5cf6;
-        --text: #e6edf3;
-        --border: #132033;
-        --glow: 0 0 24px rgba(34, 211, 238, 0.25),
-          0 0 44px rgba(139, 92, 246, 0.15);
-        --header-translate: 0px;
-      }
-      * {
-        box-sizing: border-box;
-      }
 
-      html,
-      body {
-        height: 100%;
-        scroll-behavior: smooth;
-      }
-      body {
-        margin: 0;
-        font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
-          Cantarell, Noto Sans, Helvetica Neue, Arial;
-        background: var(--bg);
-        color: var(--text);
-        overflow-x: hidden;
-        user-select: none;
-      }
-      a {
-        color: var(--brand);
-        text-decoration: none;
-      }
-      a:hover {
-        text-decoration: underline;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Valiance | Clan</title>
+  <meta name="description"
+    content="Sito ufficiale del Clan Valiance. Unisciti a noi per PVP competitivo, cw coordinate e progetti avanzati su Minecraft!" />
+  <meta property="og:title" content="Valiance | Clan Minecraft" />
+  <meta property="og:description"
+    content="Sito ufficiale del Clan Valiance. Unisciti a noi per PVP competitivo, cw coordinate e progetti avanzati su Minecraft!" />
+  <meta property="og:image" content="https://i.imgur.com/yE5SQ7N.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://valiancev2.netlify.app" />
 
-      header {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 50;
-        backdrop-filter: blur(10px);
-        background: linear-gradient(
-          180deg,
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:image" content="https://i.imgur.com/yE5SQ7N.png" />
+  <link rel="icon" href="/pfp.png" />
+  <style>
+    :root {
+      color-scheme: dark light;
+      --bg: #070b10;
+      --panel: #0b1220;
+      --muted: #8aa0b8;
+      --brand: #22d3ee;
+      --brand-2: #8b5cf6;
+      --text: #e6edf3;
+      --border: #132033;
+      --glow: 0 0 24px rgba(34, 211, 238, 0.25),
+        0 0 44px rgba(139, 92, 246, 0.15);
+      --header-translate: 0px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
+        Cantarell, Noto Sans, Helvetica Neue, Arial;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      user-select: none;
+    }
+
+    a {
+      color: var(--brand);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(180deg,
           rgba(7, 11, 16, 0.85),
-          rgba(7, 11, 16, 0.45)
-        );
-        border-bottom: 1px solid var(--border);
-        transform: translateY(0);
-        transition: none;
-      }
-      @media (max-width: 768px) {
-        header {
-          display: none;
-        }
-      }
-      .container {
-        width: min(1200px, 92vw);
-        margin: 0 auto;
-      }
-      .nav {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        padding: 14px 0;
-      }
-      .brand {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-weight: 800;
-        letter-spacing: 0.4px;
-      }
-      .logo {
-        width: 28px;
-        height: 28px;
-        filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.45));
-      }
-      nav ul {
-        list-style: none;
-        display: flex;
-        gap: 6px;
-        padding: 0;
-        margin: 0;
-        flex-wrap: wrap;
-      }
-      nav a {
-        display: block;
-        padding: 10px 12px;
-        border-radius: 10px;
-        border: 1px solid transparent;
-        transition: 0.2s;
-      }
-      nav a.active,
-      nav a:hover {
-        border-color: var(--border);
-        background: rgba(255, 255, 255, 0.03);
-        text-decoration: none;
-      }
+          rgba(7, 11, 16, 0.45));
+      border-bottom: 1px solid var(--border);
+      transform: translateY(0);
+      transition: none;
+    }
 
-      main, main section, main .container { text-align: center; }
-      #roster h4 { text-align: initial; }
+    @media (max-width: 768px) {
+      header {
+        display: none;
+      }
+    }
 
-      .hero {
-        position: relative;
-        isolation: isolate;
-        padding: 90px 0 70px;
-        text-align: center;
-        overflow: hidden;
-      }
-      .bg-grid {
-        position: absolute;
-        inset: -20%;
-        opacity: 0.18;
-        background-image: radial-gradient(#22d3ee 1px, transparent 1px);
-        background-size: 22px 22px;
-        mask: linear-gradient(#000, rgba(0, 0, 0, 0.1));
-        z-index: -2;
-        transform: translateZ(0);
-      }
-      canvas#fx {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        z-index: -1;
-        filter: blur(0.2px);
-        pointer-events: none;
-      }
-      .hero h1 {
-        font-size: clamp(34px, 5vw, 64px);
-        margin: 6px 0 10px;
-        line-height: 1.02;
-        text-shadow: var(--glow);
-      }
-      .hero p {
-        color: var(--muted);
-        font-size: clamp(15px, 2vw, 18px);
-        margin: 0 auto 20px;
-        max-width: 820px;
-      }
-      .cta {
-        display: flex;
-        gap: 12px;
-        justify-content: center;
-        flex-wrap: wrap;
-      }
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 11px 14px;
-        border-radius: 12px;
-        border: 1px solid var(--border);
-        background: linear-gradient(180deg, #0f1720, #0b0f14);
-        color: var(--text);
-        font-weight: 700;
-        letter-spacing: 0.2px;
-        transition: transform 0.12s ease, filter 0.15s;
-      }
-      .btn.primary {
-        border-color: #155e75;
-        background: linear-gradient(180deg, #0ea5b7, #0c4a6e);
-        color: #dff8ff;
-        box-shadow: 0 8px 30px rgba(14, 165, 183, 0.25);
-      }
-      .btn:hover {
-        filter: brightness(1.06);
-        text-decoration: none;
-        transform: translateY(-1px);
-      }
+    .container {
+      width: min(1200px, 92vw);
+      margin: 0 auto;
+    }
 
-      section {
-        padding: 56px 0;
-      }
-      h2 {
-        font-size: clamp(22px, 2.8vw, 30px);
-        margin: 0 0 16px;
-      }
-      .grid {
-        display: grid;
-        gap: 16px;
-        grid-template-columns: repeat(12, 1fr);
-      }
-      .card {
-        background: linear-gradient(
-          180deg,
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+    }
+
+    .logo {
+      width: 28px;
+      height: 28px;
+      filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.45));
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 6px;
+      padding: 0;
+      margin: 0;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      display: block;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      transition: 0.2s;
+    }
+
+    nav a.active,
+    nav a:hover {
+      border-color: var(--border);
+      background: rgba(255, 255, 255, 0.03);
+      text-decoration: none;
+    }
+
+    main,
+    main section,
+    main .container {
+      text-align: center;
+    }
+
+    #roster h4 {
+      text-align: initial;
+    }
+
+    .hero {
+      position: relative;
+      isolation: isolate;
+      padding: 90px 0 70px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .bg-grid {
+      position: absolute;
+      inset: -20%;
+      opacity: 0.18;
+      background-image: radial-gradient(#22d3ee 1px, transparent 1px);
+      background-size: 22px 22px;
+      mask: linear-gradient(#000, rgba(0, 0, 0, 0.1));
+      z-index: -2;
+      transform: translateZ(0);
+    }
+
+    canvas#fx {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      filter: blur(0.2px);
+      pointer-events: none;
+    }
+
+    .hero h1 {
+      font-size: clamp(34px, 5vw, 64px);
+      margin: 6px 0 10px;
+      line-height: 1.02;
+      text-shadow: var(--glow);
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: clamp(15px, 2vw, 18px);
+      margin: 0 auto 20px;
+      max-width: 820px;
+    }
+
+    .cta {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, #0f1720, #0b0f14);
+      color: var(--text);
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      transition: transform 0.12s ease, filter 0.15s;
+    }
+
+    .btn.primary {
+      border-color: #155e75;
+      background: linear-gradient(180deg, #0ea5b7, #0c4a6e);
+      color: #dff8ff;
+      box-shadow: 0 8px 30px rgba(14, 165, 183, 0.25);
+    }
+
+    .btn:hover {
+      filter: brightness(1.06);
+      text-decoration: none;
+      transform: translateY(-1px);
+    }
+
+    section {
+      padding: 56px 0;
+    }
+
+    h2 {
+      font-size: clamp(22px, 2.8vw, 30px);
+      margin: 0 0 16px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(12, 1fr);
+    }
+
+    .card {
+      background: linear-gradient(180deg,
           var(--panel),
-          rgba(11, 15, 20, 0.9)
-        );
-        border: 1px solid var(--border);
-        border-radius: 14px;
-        padding: 16px;
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
-      }
-      .muted {
-        color: var(--muted);
-      }
+          rgba(11, 15, 20, 0.9));
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
 
-      footer {
-        border-top: 1px solid var(--border);
-        padding: 22px 0 42px;
-        color: var(--muted);
-        font-size: 14px;
-      }
+    .muted {
+      color: var(--muted);
+    }
 
-      .col-12 {
-        grid-column: 1 / -1;
-      }
-      .col-8 {
-        grid-column: span 8;
-      }
-      .col-6 {
-        grid-column: span 6;
-      }
-      .col-4 {
-        grid-column: span 4;
-      }
-      @media (max-width: 980px) {
-        .col-8 {
-          grid-column: 1 / -1;
-        }
-      }
-      @media (max-width: 860px) {
-        .col-6,
-        .col-4 {
-          grid-column: 1 / -1;
-        }
-      }
+    .about .stat {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.02);
+    }
 
-      .requests {
-        display: flex;
+    .roster .member {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.02);
+      transition: transform 0.12s ease;
+      text-align: center;
+    }
+
+    .roster .member:hover {
+      transform: translateY(-2px);
+    }
+
+    .member.copied {
+      outline: 2px solid #22d3ee;
+      filter: brightness(1.07);
+    }
+
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(11, 18, 32, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      font-size: 16px;
+    }
+
+    .notification.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      border: none;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(34, 211, 238, 0.3);
+      transition: transform 0.2s ease;
+    }
+
+    .mobile-menu-btn:hover {
+      transform: scale(1.1);
+    }
+
+    @media (max-width: 768px) {
+      .mobile-menu-btn {
+        display: block;
+      }
+    }
+
+    .mobile-menu-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(7, 11, 16, 0.95);
+      backdrop-filter: blur(10px);
+      z-index: 999;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      transform: translateY(100%) scale(0.95);
+      opacity: 0;
+      transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+    }
+
+    .mobile-menu-overlay.show {
+      display: flex;
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+
+    .mobile-menu-overlay a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 18px;
+      padding: 12px 24px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      transition: background 0.2s ease;
+    }
+
+    .mobile-menu-overlay a:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .mobile-menu-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      color: var(--text);
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .notification .close {
+      cursor: pointer;
+      font-weight: bold;
+      color: var(--brand);
+    }
+
+    .avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: #0b1220;
+      border: 1px solid #132033;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      color: #22d3ee;
+      box-shadow: 0 6px 18px rgba(34, 211, 238, 0.15);
+    }
+
+    .events .event {
+      border-left: 3px solid #22d3ee;
+      padding-left: 12px;
+    }
+
+    .rules li {
+      margin: 6px 0;
+    }
+
+    #rules .container.card {
+      text-align: center;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+    }
+
+    .gallery img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      transition: transform 0.2s;
+    }
+
+    .gallery img:hover {
+      transform: scale(1.02);
+    }
+
+    .status .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #status .container.card {
+      text-align: center;
+    }
+
+    .discord-layout {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    .discord-column {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .discord-column .badge {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .clan-column {
+      text-align: left;
+    }
+
+    .gang-column {
+      text-align: right;
+    }
+
+    .center-text {
+      text-align: center;
+      flex: 2;
+      padding: 0 20px;
+      border-left: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 8px;
+      min-height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .center-text p {
+      margin: 0;
+      color: var(--text);
+      font-size: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .discord-layout {
         flex-direction: column;
         gap: 16px;
       }
-      .request {
-        background: linear-gradient(
-          180deg,
-          var(--panel),
-          rgba(11, 15, 20, 0.9)
-        );
-        border: 1px solid var(--border);
-        border-radius: 14px;
-        padding: 16px;
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
-      }
-      .request-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 12px;
-      }
-      .request-status {
-        padding: 4px 8px;
-        border-radius: 6px;
-        font-size: 12px;
-        font-weight: 600;
-      }
-      .status-open {
-        background: rgba(34, 197, 94, 0.2);
-        color: #22c55e;
-      }
-      .status-closed {
-        background: rgba(239, 68, 68, 0.2);
-        color: #ef4444;
-      }
-      .request-details {
-        text-align: left;
-      }
-      .request-field {
-        margin-bottom: 8px;
-      }
-      .request-field strong {
-        color: var(--brand);
-      }
-      .filters {
-        display: flex;
-        gap: 12px;
-        justify-content: center;
-        margin-bottom: 20px;
-        flex-wrap: wrap;
-      }
-      .filter-btn {
-        padding: 8px 16px;
-        border-radius: 8px;
-        border: 1px solid var(--border);
-        background: rgba(255, 255, 255, 0.03);
-        color: var(--text);
-        cursor: pointer;
-        transition: 0.2s;
-      }
-      .filter-btn.active {
-        border-color: var(--brand);
-        background: rgba(34, 211, 238, 0.1);
-      }
-      .filter-btn:hover {
-        filter: brightness(1.1);
-      }
-      .loading {
-        text-align: center;
-        color: var(--muted);
-      }
-      .error {
-        text-align: center;
-        color: #ef4444;
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      <div class="container nav">
-        <div class="brand">
-          <svg
-            class="logo"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-          >
-            <defs>
-              <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#22d3ee" />
-                <stop offset="100%" stop-color="#8b5cf6" />
-              </linearGradient>
-            </defs>
-            <path
-              d="M3 12l6.5-6.5L12 8l2.5-2.5L21 12l-2 2-4.5-4.5L12 12l-2.5-2.5L5 14l-2-2z"
-              fill="url(#g)"
-            />
-          </svg>
-          <span>Valiance</span>
-        </div>
-        <nav>
-          <ul id="nav-links">
-            <li><a href="/">Home</a></li>
-            <li><a href="/#roster">Staff</a></li>
-            <li><a href="/#events">Eventi</a></li>
-            <li><a href="/#rules">Regole</a></li>
-            <li><a href="/#gallery">Galleria</a></li>
-            <li><a href="/#status">Server</a></li>
-            <li><a href="/#contact">Contatti</a></li>
-            <li><a href="/account" class="active">Account</a></li>
-          </ul>
-        </nav>
-      </div>
-    </header>
 
-    <main style="padding-top: 70px;">
-      <section class="hero" id="home">
-        <div class="bg-grid" aria-hidden="true"></div>
-        <canvas id="fx" aria-hidden="true"></canvas>
-        <div class="container">
-          <h1>Account</h1>
-          <p>
-            Visualizza e gestisci le tue richieste di contatto.
+      .center-text {
+        border-left: none;
+        border-right: none;
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        padding: 16px 0;
+      }
+
+      .clan-column {
+        text-align: center;
+      }
+
+      .gang-column {
+        text-align: center;
+      }
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #ef4444;
+      box-shadow: 0 0 10px rgba(239, 68, 68, 0.7);
+    }
+
+    .dot.online {
+      background: #22c55e;
+      box-shadow: 0 0 10px rgba(34, 197, 94, 0.7);
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 22px 0 42px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .col-12 {
+      grid-column: 1 / -1;
+    }
+
+    .col-8 {
+      grid-column: span 8;
+    }
+
+    .col-6 {
+      grid-column: span 6;
+    }
+
+    .col-4 {
+      grid-column: span 4;
+    }
+
+    @media (max-width: 980px) {
+      .col-8 {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 860px) {
+
+      .col-6,
+      .col-4 {
+        grid-column: 1 / -1;
+      }
+    }
+
+    /* Stile del pulsante */
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+
+    /* Variante "primary" */
+    .btn.primary {
+      background-color: #5865F2;
+      /* colore Discord */
+      color: white;
+      border: none;
+      box-shadow: 0 4px 14px rgba(88, 101, 242, 0.4);
+    }
+
+    /* Effetto hover */
+    .btn.primary:hover {
+      background-color: #4752C4;
+      box-shadow: 0 6px 18px rgba(88, 101, 242, 0.6);
+      transform: translateY(-2px);
+    }
+
+    /* Effetto click */
+    .btn.primary:active {
+      transform: translateY(0);
+      box-shadow: 0 3px 10px rgba(88, 101, 242, 0.4);
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <svg class="logo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#22d3ee" />
+              <stop offset="100%" stop-color="#8b5cf6" />
+            </linearGradient>
+          </defs>
+          <path d="M3 12l6.5-6.5L12 8l2.5-2.5L21 12l-2 2-4.5-4.5L12 12l-2.5-2.5L5 14l-2-2z" fill="url(#g)" />
+        </svg>
+        <span>Valiance</span>
+      </div>
+      <nav>
+        <ul id="nav-links">
+          <li><a href="#roster">Staff</a></li>
+          <li><a href="#events">Eventi</a></li>
+          <li><a href="#rules">Regole</a></li>
+          <li><a href="#gallery">Galleria</a></li>
+          <li><a href="#status">Server</a></li>
+          <li><a href="#contact">Contatti</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main style="padding-top: 70px;">
+    <section class="hero" id="home">
+      <div class="bg-grid" aria-hidden="true"></div>
+      <canvas id="fx" aria-hidden="true"></canvas>
+      <div class="container" id="parallax">
+        <h1 data-depth="0.15">Valiance</h1>
+        <p data-depth="0.2">
+          Clan Minecraft orientato a PVP competitivo, cw coordinate e
+          progetti avanzati. Unisciti alla nostra community e
+          conquista i server.
+        </p>
+        <div class="cta" data-depth="0.25">
+          <button class="btn primary" onclick="window.open('/redirectclan', '_blank')">
+            Entra su Discord
+          </button>
+          <button class="btn secondary" onclick="window.location.href='/discover'">
+            Scopri di Più
+          </button>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+      <div class="container grid">
+        <div class="col-8 card">
+          <h2>Chi siamo</h2>
+          <p class="muted">
+            Siamo una squadra ambiziosa e organizzata. Pianifichiamo cw,
+            allenamenti PVP, eventi community e community pacifica.
           </p>
         </div>
-      </section>
-
-      <section id="requests">
-        <div class="container">
-          <h2>Le Tue Richieste</h2>
-          <div class="filters">
-            <button class="filter-btn active" data-filter="all">Tutte</button>
-            <button class="filter-btn" data-filter="open">Aperte</button>
-            <button class="filter-btn" data-filter="closed">Chiuse</button>
+        <div class="col-4">
+          <div class="stat"><strong>50+</strong> Membri</div>
+          <div class="stat" style="margin-top: 10px">
+            <strong>#1</strong> Coral Clan
           </div>
-          <div id="requests-container" class="requests">
-            <div class="loading">Caricamento richieste...</div>
+          <div class="stat" style="margin-top: 10px">
+            <strong>1.8.9</strong> Versione
           </div>
         </div>
-      </section>
-    </main>
-
-    <footer>
-      <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
-        <div>
-          © <span id="year"></span> Valiance. Non affiliato a Mojang/Microsoft.
-        </div>
-        <span>
-          -by @<a href="https://github.com/Indifferenzah" target="_blank">indifferenzah</a>
-        </span>
       </div>
-    </footer>
+    </section>
 
-    <script>
-      document.getElementById("year").textContent = new Date().getFullYear();
-
-      const requestsContainer = document.getElementById('requests-container');
-      const filterButtons = document.querySelectorAll('.filter-btn');
-      let allRequests = [];
-
-      async function loadRequests() {
-        try {
-          const endpoint = window.location.hostname.includes('vercel.app')
-            ? '/api/get-requests'
-            : '/.netlify/functions/get-requests';
-          const res = await fetch(endpoint);
-          if (!res.ok) throw new Error('Errore nel caricamento');
-          const requests = await res.json();
-          allRequests = requests;
-          displayRequests('all');
-        } catch (error) {
-          requestsContainer.innerHTML = '<div class="error">Errore nel caricamento delle richieste.</div>';
-          console.error(error);
-        }
-      }
-
-      function displayRequests(filter) {
-        let filteredRequests = allRequests;
-        if (filter === 'open') {
-          filteredRequests = allRequests.filter(r => r.status === 'Aperta');
-        } else if (filter === 'closed') {
-          filteredRequests = allRequests.filter(r => r.status === 'Chiusa');
-        }
-
-        if (filteredRequests.length === 0) {
-          requestsContainer.innerHTML = '<div class="muted">Nessuna richiesta trovata.</div>';
-          return;
-        }
-
-        const html = filteredRequests.map(request => `
-          <div class="request">
-            <div class="request-header">
-              <div>
-                <strong>Richiesta #${request.id}</strong>
-                <div class="muted">${new Date(request.timestamp).toLocaleString('it-IT')}</div>
-              </div>
-              <div class="request-status ${request.status === 'Aperta' ? 'status-open' : 'status-closed'}">
-                ${request.status}
-              </div>
-            </div>
-            <div class="request-details">
-              <div class="request-field"><strong>IGN:</strong> ${request.ign}</div>
-              <div class="request-field"><strong>Discord:</strong> ${request.discord_username}</div>
-              <div class="request-field"><strong>Nome:</strong> ${request.name}</div>
-              <div class="request-field"><strong>Tipo:</strong> ${request.type}</div>
-              <div class="request-field"><strong>Messaggio:</strong> ${request.message}</div>
-              ${request.response ? `<div class="request-field"><strong>Risposta:</strong> ${request.response}</div>` : ''}
-              ${request.responder ? `<div class="request-field"><strong>Risposto da:</strong> ${request.responder}</div>` : ''}
+    <section id="roster" class="roster">
+      <div class="container">
+        <h2>Staff</h2>
+        <h4>Founder</h4>
+        <div class="grid">
+          <div class="col-4 card member" data-discord-id="810890907989049384">
+            <div class="avatar" aria-label="Avatar"></div>
+            <div>
+              <strong>GabriNumberOne</strong>
+              <div class="muted name">CW Organizer</div>
             </div>
           </div>
-        `).join('');
-        requestsContainer.innerHTML = html;
-      }
+          <div class="col-4 card member" data-discord-id="964986129491316847">
+            <div class="avatar" aria-label="Avatar"></div>
+            <div>
+              <strong>debbnotfound</strong>
+              <div class="muted name"></div>
+            </div>
+          </div>
+        </div>
+        <h4>Co Leader</h4>
+        <div class="grid">
+          <div class="col-4 card member" data-discord-id="1375622684343537785">
+            <div class="avatar" aria-label="Avatar"></div>
+            <div>
+              <strong>swityy</strong>
+              <div class="muted name"></div>
+            </div>
+          </div>
+          <div class="col-4 card member" data-discord-id="1123622103917285418">
+            <div class="avatar" aria-label="Avatar"></div>
+            <div>
+              <strong>DrNooB_</strong>
+              <div class="muted name">Main Dev</div>
+            </div>
+          </div>
+        </div>
+        <h4>Moderator</h4>
+        <div class="grid">
+          <div class="col-4 card member">
+            <div>
+              <strong>//</strong>
+              <div class="muted name"></div>
+            </div>
+          </div>
+        </div>
+        <h4>Helper</h4>
+        <div class="grid">
+          <div class="col-4 card member" data-discord-id="559053052150284298">
+            <div class="avatar" aria-label="Avatar"></div>
+            <div>
+              <strong>JustFr4</strong>
+              <div class="muted name">CW Organizer</div>
+            </div>
+          </div>
+          <div class="col-4 card member" data-discord-id="1334535608474931283">
+            <div class="avatar" aria-label="Avatar"></div>
+            <div>
+              <strong>palle361</strong>
+              <div class="muted name"></div>
+            </div>
+          </div>
+          <div class="col-4 card member" data-discord-id="802855882215784468">
+            <div class="avatar" aria-label="Avatar"></div>
+            <div>
+              <strong>Buonaseragiacomo</strong>
+              <div class="muted name"></div>
+            </div>
+          </div>
+          <div class="col-4 card member" data-discord-id="1180919961540120687">
+            <div class="avatar" aria-label="Avatar"></div>
+            <div>
+              <strong>xanaxx1</strong>
+              <div class="muted name"></div>
+            </div>
+          </div>
+          <div class="col-4 card member" data-discord-id="943188659820191755">
+            <div class="avatar" aria-label="Avatar"></div>
+            <div>
+              <strong>Pellons</strong>
+              <div class="muted name"></div>
+            </div>
+          </div>
+          <div class="col-4 card member" data-discord-id="1414139880006619156">
+            <div class="avatar" aria-label="Avatar"></div>
+            <div>
+              <strong>SerenityCode</strong>
+              <div class="muted name"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-      filterButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-          filterButtons.forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          displayRequests(btn.dataset.filter);
-        });
-      });
+    <section id="events" class="events">
+      <div class="container grid">
+        <div class="col-12">
+          <h2>Eventi</h2>
+        </div>
+        <div class="col-12 card event">
+          <strong>CW Interna</strong>
+          <div class="muted">Lunedì, Mercoledì, Venerdì <|> Ore 19:00</div>
+        </div>
+      </div>
+    </section>
 
-      loadRequests();
+    <section id="rules" class="rules">
+      <div class="container card">
+        <h2>Regole</h2>
+        <ol class="muted">
+          <li><strong>Rispetto</strong>: Tratta tutti con rispetto. Niente insulti, discriminazioni o molestie.</li>
+          <li><strong>Niente spam</strong>: Evita messaggi ripetuti, emoji in eccesso o tag inutili.</li>
+          <li><strong>Contenuti appropriati</strong>: Vietati contenuti NSFW, gore o illegali.</li>
+          <li><strong>Canali giusti</strong>: Scrivi nei canali corretti e rispetta il tema di ciascuno.</li>
+          <li><strong>No pubblicità</strong>: Non condividere link, server o social senza permesso dello staff.</li>
+          <li><strong>Sicurezza</strong>: Non condividere dati personali e segnala comportamenti sospetti.</li>
+          <li><strong>Staff</strong>: Rispetta le decisioni dello staff. Se hai dubbi, apri un ticket.</li>
+        </ol>
+      </div>
+    </section>
 
-      const canvas = document.getElementById("fx");
-      const ctx = canvas.getContext("2d");
-      let W,
-        H,
-        particles = [],
-        clickParticles = [];
-      function resize() {
-        W = canvas.width = innerWidth;
-        H = canvas.height = innerHeight;
-      }
-      window.addEventListener("resize", () => {
-        resize();
-        spawn(true);
-      });
-      function rand(a, b) {
-        return Math.random() * (b - a) + a;
-      }
-      function colorMix(t) {
-        return `rgba(${34 + t * (139 - 34)}, ${211 - t * (211 - 92)}, ${
-          238 - t * (238 - 246)
-        }, ${0.16 + 0.12 * Math.sin(performance.now() / 800)})`;  
-      }
-      function spawn(reset = false) {
-        const count = Math.max(120, Math.floor((W * H) / 10000));
-        if (reset) particles = [];
-        while (particles.length < count) {
-          particles.push({
-            x: rand(0, W),
-            y: rand(0, H),
-            vx: rand(-0.2, 0.2),
-            vy: rand(0.15, 0.45),
-            r: rand(0.6, 2.2),
-          });
-        }
-      }
-      let mx = 0,
-        my = 0;
-      window.addEventListener("mousemove", (e) => {
-        mx = e.clientX;
-        my = e.clientY;
-        for (let i = 0; i < 2; i++) {
-          clickParticles.push({
-            x: e.clientX + rand(-10, 10),
-            y: e.clientY + rand(-10, 10),
-            vx: rand(-2, 2),
-            vy: rand(-2, 2),
-            r: rand(1, 3),
-            life: 60,
-          });
-        }
-      });
-      window.addEventListener("click", (e) => {
-        for (let i = 0; i < 10; i++) {
-          clickParticles.push({
-            x: e.clientX + rand(-20, 20),
-            y: e.clientY + rand(-20, 20),
-            vx: rand(-4, 4),
-            vy: rand(-4, 4),
-            r: rand(2, 5),
-            life: 120,
-          });
-        }
-      });
-      function step() {
-        ctx.clearRect(0, 0, W, H);
-        const t = (Math.sin(performance.now() / 1200) + 1) / 2;
-        particles.forEach((p) => {
-          const dx = mx - p.x,
-            dy = my - p.y;
-          const dist = Math.hypot(dx, dy) || 1;
-          const force = Math.min(40 / dist, 0.12);
-          p.vx += ((force * dx) / dist) * 0.02;
-          p.vy += ((force * dy) / dist) * 0.02;
-          p.x += p.vx;
-          p.y += p.vy;
-          p.vx *= 0.985;
-          p.vy *= 0.985;
-          if (p.x < -10) p.x = W + 10;
-          if (p.x > W + 10) p.x = -10;
-          if (p.y < -10) p.y = H + 10;
-          if (p.y > H + 10) p.y = -10;
-          ctx.beginPath();
-          ctx.fillStyle = colorMix(t);
-          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-          ctx.fill();
-        });
-        clickParticles = clickParticles.filter((p) => {
-          p.x += p.vx;
-          p.y += p.vy;
-          p.vx *= 0.98;
-          p.vy *= 0.98;
-          p.life--;
-          if (p.life > 0) {
-            ctx.beginPath();
-            ctx.fillStyle = `rgba(34, 211, 238, ${p.life / 120})`;
-            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-            ctx.fill();
-            return true;
+    <section id="gallery">
+      <div class="container">
+        <h2>Galleria</h2>
+        <div class="gallery">
+          <img src="https://i.imgur.com/QJN3H6n.png" alt="Screen con Ole" />
+        </div>
+      </div>
+    </section>
+
+    <section id="status" class="status">
+      <div class="container card">
+        <h2>Status Server</h2>
+        <div class="row">
+          <div class="badge">
+            <span class="dot" id="status-dot"></span><span id="status-text">Sconosciuto</span>
+          </div>
+          <div class="badge">
+            IP: <strong id="server-ip">play.coralmc.it</strong>
+          </div>
+          <div class="badge">
+            Versione: <strong id="server-version">1.20+</strong>
+          </div>
+          <div class="badge">
+            Online: <strong id="players-online">--</strong>
+          </div>
+        </div>
+        <p class="muted" style="margin-top: 10px">
+          Entra adesso e gioca con noi su <strong>play.coralmc.it</strong>!
+        </p>
+      </div>
+    </section>
+
+    <section id="discord" class="discord">
+      <div class="container card">
+        <h2>Discord</h2>
+        <div class="discord-layout">
+          <div class="discord-column clan-column">
+            <div class="badge">Server: <strong>Valiance Clan</strong></div>
+            <div class="badge">Online: <strong id="discord1-online">--</strong></div>
+          </div>
+          <div class="discord-column center-text">
+            <p>Queste sono le statistiche dei nostri server Discord. Il server della Gang è ancora in sviluppo!</p>
+          </div>
+          <div class="discord-column gang-column">
+            <div class="badge">Server: <strong>Valiance Gang</strong></div>
+            <div class="badge">Online: <strong id="discord2-online">--</strong></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <div class="card">
+          <h2>Contatti</h2>
+          <p class="muted">
+            Candidature e collaborazioni sul nostro Discord.
+          </p>
+          <p>
+            <button class="btn primary" onclick="window.open('/redirectclan', '_blank')">
+              Discord Clan
+            </button>
+            <button class="btn primary" onclick="window.open('/redirectgang', '_blank')">
+              Discord Gang
+            </button>
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+      <div>
+        © <span id="year"></span> Valiance. Non affiliato a Mojang/Microsoft.
+      </div>
+      <span>
+        -by @<a href="https://github.com/Indifferenzah" target="_blank">indifferenzah</a>
+      </span>
+    </div>
+  </footer>
+
+  <div id="notification" class="notification">
+    <span>ID Copiato!</span>
+    <span class="close" onclick="hideNotification()">×</span>
+  </div>
+
+  <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
+  <div class="mobile-menu-overlay" id="mobile-menu-overlay">
+    <button class="mobile-menu-close" id="mobile-menu-close">×</button>
+    <a href="#home">Home</a>
+    <a href="#about">Chi siamo</a>
+    <a href="#roster">Staff</a>
+    <a href="#events">Eventi</a>
+    <a href="#rules">Regole</a>
+    <a href="#gallery">Galleria</a>
+    <a href="#status">Server</a>
+    <a href="#discord">Discord</a>
+    <a href="#contact">Contatti</a>
+  </div>
+
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    const sections = Array.from(
+      document.querySelectorAll("main section[id]")
+    );
+    const navLinks = Array.from(document.querySelectorAll("#nav-links a"));
+    const titleMap = {
+      home: "Home | Valiance",
+      about: "Chi siamo | Valiance",
+      roster: "Staff | Valiance",
+      events: "Eventi | Valiance",
+      rules: "Regole | Valiance",
+      gallery: "Galleria | Valiance",
+      status: "Server | Valiance",
+      discord: "Discord | Valiance",
+      contact: "Contatti | Valiance"
+    };
+    const setActive = (id) =>
+      navLinks.forEach((a) =>
+        a.classList.toggle("active", a.getAttribute("href") === "#" + id)
+      );
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            setActive(e.target.id);
+            document.title = titleMap[e.target.id] || "Valiance";
           }
-          return false;
         });
-        requestAnimationFrame(step);
-      }
+      },
+      { threshold: 0.55 }
+    );
+    sections.forEach((s) => obs.observe(s));
+
+    const parallax = document.getElementById("parallax");
+    const depthNodes = parallax
+      ? Array.from(parallax.querySelectorAll("[data-depth]"))
+      : [];
+    let mouseX = 0,
+      mouseY = 0;
+    let rafId = 0;
+    function onMove(e) {
+      const rect = document.body.getBoundingClientRect();
+      mouseX = (e.clientX - rect.width / 2) / rect.width;
+      mouseY = (e.clientY - window.innerHeight / 2) / window.innerHeight;
+      if (!rafId) rafId = requestAnimationFrame(updateParallax);
+    }
+    function updateParallax() {
+      depthNodes.forEach((node) => {
+        const d = parseFloat(node.dataset.depth || "0");
+        const tx = -mouseX * d * 30; // px
+        const ty = -mouseY * d * 30;
+        node.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
+      });
+      rafId = 0;
+    }
+    window.addEventListener("mousemove", onMove, { passive: true });
+
+    const canvas = document.getElementById("fx");
+    const ctx = canvas.getContext("2d");
+    let W,
+      H,
+      particles = [],
+      clickParticles = [];
+    function resize() {
+      W = canvas.width = innerWidth;
+      H = canvas.height = innerHeight;
+    }
+    window.addEventListener("resize", () => {
       resize();
       spawn(true);
-      step();
-    </script>
-  </body>
+    });
+    function rand(a, b) {
+      return Math.random() * (b - a) + a;
+    }
+    function colorMix(t) {
+      return `rgba(${34 + t * (139 - 34)}, ${211 - t * (211 - 92)}, ${238 - t * (238 - 246)
+        }, ${0.16 + 0.12 * Math.sin(performance.now() / 800)})`;
+    }
+    function spawn(reset = false) {
+      const count = Math.max(120, Math.floor((W * H) / 10000));
+      if (reset) particles = [];
+      while (particles.length < count) {
+        particles.push({
+          x: rand(0, W),
+          y: rand(0, H),
+          vx: rand(-0.2, 0.2),
+          vy: rand(0.15, 0.45),
+          r: rand(0.6, 2.2),
+        });
+      }
+    }
+    let mx = 0,
+      my = 0;
+    window.addEventListener("mousemove", (e) => {
+      mx = e.clientX;
+      my = e.clientY;
+      for (let i = 0; i < 2; i++) {
+        clickParticles.push({
+          x: e.clientX + rand(-10, 10),
+          y: e.clientY + rand(-10, 10),
+          vx: rand(-2, 2),
+          vy: rand(-2, 2),
+          r: rand(1, 3),
+          life: 60,
+        });
+      }
+    });
+    window.addEventListener("click", (e) => {
+      for (let i = 0; i < 10; i++) {
+        clickParticles.push({
+          x: e.clientX + rand(-20, 20),
+          y: e.clientY + rand(-20, 20),
+          vx: rand(-4, 4),
+          vy: rand(-4, 4),
+          r: rand(2, 5),
+          life: 120,
+        });
+      }
+    });
+    function step() {
+      ctx.clearRect(0, 0, W, H);
+      const t = (Math.sin(performance.now() / 1200) + 1) / 2;
+      particles.forEach((p) => {
+        const dx = mx - p.x,
+          dy = my - p.y;
+        const dist = Math.hypot(dx, dy) || 1;
+        const force = Math.min(40 / dist, 0.12);
+        p.vx += ((force * dx) / dist) * 0.02;
+        p.vy += ((force * dy) / dist) * 0.02;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vx *= 0.985;
+        p.vy *= 0.985;
+        if (p.x < -10) p.x = W + 10;
+        if (p.x > W + 10) p.x = -10;
+        if (p.y < -10) p.y = H + 10;
+        if (p.y > H + 10) p.y = -10;
+        ctx.beginPath();
+        ctx.fillStyle = colorMix(t);
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      clickParticles = clickParticles.filter((p) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vx *= 0.98;
+        p.vy *= 0.98;
+        p.life--;
+        if (p.life > 0) {
+          ctx.beginPath();
+          ctx.fillStyle = `rgba(34, 211, 238, ${p.life / 120})`;
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+          return true;
+        }
+        return false;
+      });
+      requestAnimationFrame(step);
+    }
+    resize();
+    spawn(true);
+    step();
+
+    const ipEl = document.getElementById("server-ip");
+    const ip = ipEl.textContent.trim();
+    async function fetchStatus(host) {
+      try {
+        const res = await fetch(
+          `https://api.mcstatus.io/v2/status/java/${encodeURIComponent(host)}`
+        );
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json();
+        const dot = document.getElementById("status-dot");
+        const text = document.getElementById("status-text");
+        const players = document.getElementById("players-online");
+        if (data?.online) {
+          dot.classList.add("online");
+          text.textContent = "Online";
+          players.textContent = data.players?.online ?? 0;
+          document.getElementById("server-version").textContent =
+            data.version?.name_raw || "N/D";
+        } else {
+          dot.classList.remove("online");
+          text.textContent = "Offline";
+          players.textContent = "--";
+        }
+      } catch (e) {
+        console.warn("Status fetch failed", e);
+      }
+    }
+    if (ip && ip !== "play.tuo-server.it") fetchStatus(ip);
+
+    async function applyDiscordAvatars() {
+      const members = Array.from(
+        document.querySelectorAll(".member[data-discord-id]")
+      );
+      await Promise.all(
+        members.map(async (m) => {
+          const id = m.getAttribute("data-discord-id");
+          const avatarEl = m.querySelector(".avatar");
+          const fallback = () => {
+            try {
+              const idx = Number((BigInt(id) >> 22n) % 6n);
+              const url = `https://cdn.discordapp.com/embed/avatars/${idx}.png`;
+              avatarEl.style.background = `center / cover no-repeat url('${url}')`;
+              avatarEl.style.border = "1px solid #1f3a5a";
+              avatarEl.textContent = "";
+            } catch (e) {
+              avatarEl.textContent = "";
+            }
+          };
+          try {
+            const endpoint = window.location.hostname.includes("vercel.app")
+              ? `/api/get-avatar?id=${encodeURIComponent(id)}`
+              : `/.netlify/functions/get-avatar?id=${encodeURIComponent(id)}`;
+
+            const res = await fetch(endpoint);
+
+            if (!res.ok) return fallback();
+            const data = await res.json();
+            const url = data?.url;
+            if (!url) return fallback();
+            avatarEl.style.background = `center / cover no-repeat url('${url}')`;
+            avatarEl.style.border = "1px solid #1f3a5a";
+            avatarEl.textContent = "";
+          } catch {
+            fallback();
+          }
+        })
+      );
+    }
+    applyDiscordAvatars();
+
+    (function fetchDiscordWidgets() {
+      const endpoints = [
+        { url: 'https://discord.com/api/guilds/1350073876339490826/widget.json', onlineEl: '#discord1-online', totalEl: '#discord1-total' },
+        { url: 'https://discord.com/api/guilds/1436756175310950588/widget.json', onlineEl: '#discord2-online', totalEl: '#discord2-total' },
+      ];
+      endpoints.forEach(async ({ url, onlineEl, totalEl }) => {
+        const onlineNode = document.querySelector(onlineEl);
+        const totalNode = document.querySelector(totalEl);
+        try {
+          const res = await fetch(url, { cache: 'no-store' });
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const data = await res.json();
+          const online = typeof data.presence_count === 'number' ? data.presence_count : (data.members?.length ?? 'N/D');
+          const total = data.approximate_member_count || 'N/D';
+          if (onlineNode) onlineNode.textContent = online;
+          if (totalNode) totalNode.textContent = total;
+        } catch (e) {
+          if (onlineNode) onlineNode.textContent = 'N/D';
+          if (totalNode) totalNode.textContent = 'N/D';
+        }
+      });
+    })();
+
+    (function enableCopyDiscordId() {
+      const members = Array.from(document.querySelectorAll(".member"));
+      const notification = document.getElementById("notification");
+      function showNotification() {
+        notification.classList.add("show");
+        setTimeout(() => {
+          hideNotification();
+        }, 3000);
+      }
+      window.hideNotification = function () {
+        notification.classList.remove("show");
+      };
+      members.forEach((m) => {
+        m.style.cursor = "pointer";
+        m.addEventListener("click", async () => {
+          const id = m.getAttribute("data-discord-id");
+          if (!id) return;
+          try {
+            await navigator.clipboard.writeText(id);
+            showNotification();
+          } catch (e) {
+            const ta = document.createElement("textarea");
+            ta.value = id;
+            document.body.appendChild(ta);
+            ta.select();
+            try { document.execCommand("copy"); showNotification(); } finally { document.body.removeChild(ta); }
+          }
+        });
+      });
+    })();
+
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+    const mobileMenuClose = document.getElementById('mobile-menu-close');
+    const mobileMenuLinks = mobileMenuOverlay.querySelectorAll('a');
+
+    function toggleMobileMenu() {
+      mobileMenuOverlay.classList.toggle('show');
+    }
+
+    function closeMobileMenu() {
+      mobileMenuOverlay.classList.remove('show');
+    }
+
+    mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+    mobileMenuClose.addEventListener('click', closeMobileMenu);
+    mobileMenuLinks.forEach(link => {
+      link.addEventListener('click', closeMobileMenu);
+    });
+  </script>
+</body>
+
 </html>
