@@ -817,38 +817,56 @@
               </button>
             </p>
           </div>
-          <div class="col-6 card">
-            <h2>Invia una Richiesta</h2>
-            <form id="contact-form">
-              <div style="margin-bottom: 10px;">
-                <label for="ign" style="display: block; margin-bottom: 5px; color: var(--text);">IGN (In Game Name):</label>
-                <input type="text" id="ign" name="ign" required style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--text);">
-              </div>
-              <div style="margin-bottom: 10px;">
-                <label for="discord_username" style="display: block; margin-bottom: 5px; color: var(--text);">Username Discord:</label>
-                <input type="text" id="discord_username" name="discord_username" required style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--text);">
-              </div>
-              <div style="margin-bottom: 10px;">
-                <label for="name" style="display: block; margin-bottom: 5px; color: var(--text);">Nome:</label>
-                <input type="text" id="name" name="name" required style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--text);">
-              </div>
-              <div style="margin-bottom: 10px;">
-                <label for="type" style="display: block; margin-bottom: 5px; color: var(--text);">Tipo Richiesta:</label>
-                <select id="type" name="type" required style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--text);">
-                  <option value="">Seleziona...</option>
-                  <option value="candidatura">Candidatura</option>
-                  <option value="collaborazione">Collaborazione</option>
-                  <option value="segnalazione">Segnalazione</option>
-                  <option value="altro">Altro</option>
-                </select>
-              </div>
-              <div style="margin-bottom: 10px;">
-                <label for="message" style="display: block; margin-bottom: 5px; color: var(--text);">Messaggio:</label>
-                <textarea id="message" name="message" required style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--text); resize: vertical;"></textarea>
-              </div>
-              <button type="submit" class="btn primary">Invia Richiesta</button>
-            </form>
-            <div id="form-response" style="margin-top: 10px; color: var(--brand);"></div>
+          <div class="col-6 card" id="contact-content">
+            <div id="login-form">
+              <h2>Accedi per Inviare Richieste</h2>
+              <form id="auth-form">
+                <div style="margin-bottom: 10px;">
+                  <label for="username" style="display: block; margin-bottom: 5px; color: var(--text);">Username:</label>
+                  <input type="text" id="username" name="username" required style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--text);">
+                </div>
+                <div style="margin-bottom: 10px;">
+                  <label for="password" style="display: block; margin-bottom: 5px; color: var(--text);">Password:</label>
+                  <input type="password" id="password" name="password" required style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--text);">
+                </div>
+                <button type="submit" class="btn primary">Accedi</button>
+              </form>
+              <div id="auth-response" style="margin-top: 10px; color: var(--brand);"></div>
+            </div>
+            <div id="request-form" style="display: none;">
+              <h2>Invia una Richiesta</h2>
+              <form id="contact-form">
+                <div style="margin-bottom: 10px;">
+                  <label for="ign" style="display: block; margin-bottom: 5px; color: var(--text);">IGN (In Game Name):</label>
+                  <input type="text" id="ign" name="ign" required style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--text);">
+                </div>
+                <div style="margin-bottom: 10px;">
+                  <label for="discord_username" style="display: block; margin-bottom: 5px; color: var(--text);">Username Discord:</label>
+                  <input type="text" id="discord_username" name="discord_username" required style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--text);">
+                </div>
+                <div style="margin-bottom: 10px;">
+                  <label for="name" style="display: block; margin-bottom: 5px; color: var(--text);">Nome:</label>
+                  <input type="text" id="name" name="name" required style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--text);">
+                </div>
+                <div style="margin-bottom: 10px;">
+                  <label for="type" style="display: block; margin-bottom: 5px; color: var(--text);">Tipo Richiesta:</label>
+                  <select id="type" name="type" required style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--text);">
+                    <option value="">Seleziona...</option>
+                    <option value="candidatura">Candidatura</option>
+                    <option value="collaborazione">Collaborazione</option>
+                    <option value="segnalazione">Segnalazione</option>
+                    <option value="altro">Altro</option>
+                  </select>
+                </div>
+                <div style="margin-bottom: 10px;">
+                  <label for="message" style="display: block; margin-bottom: 5px; color: var(--text);">Messaggio:</label>
+                  <textarea id="message" name="message" required style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--text); resize: vertical;"></textarea>
+                </div>
+                <button type="submit" class="btn primary">Invia Richiesta</button>
+                <button type="button" id="logout-btn" class="btn" style="margin-left: 10px;">Logout</button>
+              </form>
+              <div id="form-response" style="margin-top: 10px; color: var(--brand);"></div>
+            </div>
           </div>
         </div>
       </section>
@@ -1194,14 +1212,46 @@
         link.addEventListener('click', closeMobileMenu);
       });
 
-      (function handleContactForm() {
-        const form = document.getElementById('contact-form');
-        const responseEl = document.getElementById('form-response');
-        form.addEventListener('submit', async (e) => {
+      (function handleAuthAndContact() {
+        const loginForm = document.getElementById('auth-form');
+        const contactForm = document.getElementById('contact-form');
+        const authResponseEl = document.getElementById('auth-response');
+        const formResponseEl = document.getElementById('form-response');
+        const loginDiv = document.getElementById('login-form');
+        const requestDiv = document.getElementById('request-form');
+        const logoutBtn = document.getElementById('logout-btn');
+
+        function checkAuth() {
+          const isLoggedIn = localStorage.getItem('valiance_logged_in') === 'true';
+          if (isLoggedIn) {
+            loginDiv.style.display = 'none';
+            requestDiv.style.display = 'block';
+          } else {
+            loginDiv.style.display = 'block';
+            requestDiv.style.display = 'none';
+          }
+        }
+
+        loginForm.addEventListener('submit', async (e) => {
           e.preventDefault();
-          const formData = new FormData(form);
+          const formData = new FormData(loginForm);
           const data = Object.fromEntries(formData);
-          responseEl.textContent = 'Invio in corso...';
+          authResponseEl.textContent = 'Accesso in corso...';
+          if (data.username === 'user' && data.password === 'pass') {
+            localStorage.setItem('valiance_logged_in', 'true');
+            authResponseEl.textContent = 'Accesso riuscito!';
+            checkAuth();
+            loginForm.reset();
+          } else {
+            authResponseEl.textContent = 'Credenziali errate.';
+          }
+        });
+
+        contactForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const formData = new FormData(contactForm);
+          const data = Object.fromEntries(formData);
+          formResponseEl.textContent = 'Invio in corso...';
           try {
             const endpoint = window.location.hostname.includes('vercel.app')
               ? '/api/submit-contact'
@@ -1213,15 +1263,22 @@
             });
             const result = await res.json();
             if (res.ok) {
-              responseEl.textContent = 'Richiesta inviata con successo!';
-              form.reset();
+              formResponseEl.textContent = 'Richiesta inviata con successo!';
+              contactForm.reset();
             } else {
-              responseEl.textContent = 'Errore: ' + result.error;
+              formResponseEl.textContent = 'Errore: ' + result.error;
             }
           } catch (err) {
-            responseEl.textContent = 'Errore di rete.';
+            formResponseEl.textContent = 'Errore di rete.';
           }
         });
+
+        logoutBtn.addEventListener('click', () => {
+          localStorage.removeItem('valiance_logged_in');
+          checkAuth();
+        });
+
+        checkAuth();
       })();
     </script>
   </body>
