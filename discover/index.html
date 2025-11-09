@@ -360,18 +360,46 @@
       }
 
       .stats-container .stats-box {
-        flex: 1; /* 1 parte su 3 */
-        max-width: 33.333%; /* precisa 1/3 */
+        flex: 1;
+        max-width: 33.333%;
         padding: 15px;
         box-sizing: border-box;
       }
 
       .stats-container .filler {
-        flex: 2; /* 2 parti su 3 */
+        flex: 2;
       }
 
       .stat {
         font-size: 18px;
+      }
+      .btn {
+        display: inline-block;
+        padding: 12px 24px;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.25s ease;
+        cursor: pointer;
+      }
+
+      .btn.primary {
+        background-color: #5865F2;
+        color: white;
+        border: none;
+        box-shadow: 0 4px 14px rgba(88, 101, 242, 0.4);
+      }
+
+      .btn.primary:hover {
+        background-color: #4752C4;
+        box-shadow: 0 6px 18px rgba(88, 101, 242, 0.6);
+        transform: translateY(-2px);
+      }
+
+      .btn.primary:active {
+        transform: translateY(0);
+        box-shadow: 0 3px 10px rgba(88, 101, 242, 0.4);
       }
     </style>
   </head>
@@ -503,7 +531,9 @@
             <button class="btn primary" onclick="window.open('/redirectclan', '_blank')">
               Unisciti al Clan
             </button>
-            <a class="btn" href="/">Torna alla Home</a>
+            <button class="btn secondary" onclick="window.location.href='/'">
+              Torna alla Home
+            </button>
           </div>
         </div>
       </section>
