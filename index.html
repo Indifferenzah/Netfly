@@ -74,6 +74,11 @@
         transform: translateY(0);
         transition: none;
       }
+      @media (max-width: 768px) {
+        header {
+          display: none;
+        }
+      }
       .container {
         width: min(1200px, 92vw);
         margin: 0 auto;
@@ -249,22 +254,90 @@
         position: fixed;
         top: 20px;
         right: 20px;
-        background: var(--panel);
+        background: rgba(11, 18, 32, 0.85);
         border: 1px solid var(--border);
-        border-radius: 8px;
-        padding: 12px 16px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        border-radius: 12px;
+        padding: 16px 20px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
         z-index: 1000;
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 10px;
         opacity: 0;
         transform: translateY(-10px);
         transition: opacity 0.3s ease, transform 0.3s ease;
+        font-size: 16px;
       }
       .notification.show {
         opacity: 1;
         transform: translateY(0);
+      }
+
+      .mobile-menu-btn {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--brand), var(--brand-2));
+        border: none;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+        z-index: 1000;
+        box-shadow: 0 4px 12px rgba(34, 211, 238, 0.3);
+        transition: transform 0.2s ease;
+      }
+      .mobile-menu-btn:hover {
+        transform: scale(1.1);
+      }
+      @media (max-width: 768px) {
+        .mobile-menu-btn {
+          display: block;
+        }
+      }
+
+      .mobile-menu-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(7, 11, 16, 0.95);
+        backdrop-filter: blur(10px);
+        z-index: 999;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+      }
+      .mobile-menu-overlay.show {
+        display: flex;
+      }
+      .mobile-menu-overlay a {
+        color: var(--text);
+        text-decoration: none;
+        font-size: 18px;
+        padding: 12px 24px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.1);
+        transition: background 0.2s ease;
+      }
+      .mobile-menu-overlay a:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+      .mobile-menu-close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: none;
+        border: none;
+        color: var(--text);
+        font-size: 24px;
+        cursor: pointer;
       }
       .notification .close {
         cursor: pointer;
@@ -736,8 +809,22 @@
     </footer>
 
     <div id="notification" class="notification">
-      <span>Copiato!</span>
+      <span>ID Copiato!</span>
       <span class="close" onclick="hideNotification()">×</span>
+    </div>
+
+    <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay">
+      <button class="mobile-menu-close" id="mobile-menu-close">×</button>
+      <a href="#home">Home</a>
+      <a href="#about">Chi siamo</a>
+      <a href="#roster">Staff</a>
+      <a href="#events">Eventi</a>
+      <a href="#rules">Regole</a>
+      <a href="#gallery">Galleria</a>
+      <a href="#status">Server</a>
+      <a href="#discord">Discord</a>
+      <a href="#contact">Contatti</a>
     </div>
 
 
@@ -987,7 +1074,7 @@
             if (!res.ok) throw new Error('HTTP ' + res.status);
             const data = await res.json();
             const online = typeof data.presence_count === 'number' ? data.presence_count : (data.members?.length ?? 'N/D');
-            const total = data.approximate_member_count || data.members?.length || 'N/D';
+            const total = data.approximate_member_count || 'N/D';
             if (onlineNode) onlineNode.textContent = online;
             if (totalNode) totalNode.textContent = total;
           } catch (e) {
@@ -1030,6 +1117,26 @@
       })();
 
       // Header always visible: removed hide/show logic
+
+      // Mobile menu toggle
+      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+      const mobileMenuClose = document.getElementById('mobile-menu-close');
+      const mobileMenuLinks = mobileMenuOverlay.querySelectorAll('a');
+
+      function toggleMobileMenu() {
+        mobileMenuOverlay.classList.toggle('show');
+      }
+
+      function closeMobileMenu() {
+        mobileMenuOverlay.classList.remove('show');
+      }
+
+      mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+      mobileMenuClose.addEventListener('click', closeMobileMenu);
+      mobileMenuLinks.forEach(link => {
+        link.addEventListener('click', closeMobileMenu);
+      });
     </script>
   </body>
 </html>
