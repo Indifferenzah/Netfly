@@ -313,9 +313,14 @@
         justify-content: center;
         align-items: center;
         gap: 20px;
+        transform: translateY(100%) scale(0.95);
+        opacity: 0;
+        transition: transform 0.5s ease-out, opacity 0.5s ease-out;
       }
       .mobile-menu-overlay.show {
         display: flex;
+        transform: translateY(0) scale(1);
+        opacity: 1;
       }
       .mobile-menu-overlay a {
         color: var(--text);
@@ -755,7 +760,6 @@
             <div class="discord-column clan-column">
               <div class="badge">Server: <strong>Valiance Clan</strong></div>
               <div class="badge">Online: <strong id="discord1-online">--</strong></div>
-              <div class="badge">Totali: <strong>></strong><strong id="discord1-total">--</strong></div>
             </div>
             <div class="discord-column center-text">
               <p>Queste sono le statistiche dei nostri server Discord. Il server della Gang è ancora in sviluppo!</p>
@@ -763,7 +767,6 @@
             <div class="discord-column gang-column">
               <div class="badge">Server: <strong>Valiance Gang</strong></div>
               <div class="badge">Online: <strong id="discord2-online">--</strong></div>
-              <div class="badge">Totali: <strong id="discord2-total">--</strong></div>
             </div>
           </div>
         </div>
