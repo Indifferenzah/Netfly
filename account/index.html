@@ -410,9 +410,7 @@
 
       async function loadRequests() {
         try {
-          const endpoint = window.location.hostname.includes('vercel.app')
-            ? '/api/get-requests'
-            : '/.netlify/functions/get-requests';
+          const endpoint = 'https://paid5.daki.cc:4226/get-requests';
           const res = await fetch(endpoint);
           if (!res.ok) throw new Error('Errore nel caricamento');
           const requests = await res.json();
