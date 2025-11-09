@@ -815,6 +815,33 @@
                 Discord Gang
               </button>
             </p>
+            <h3>Invia una Richiesta</h3>
+            <form id="contact-form">
+              <div style="margin-bottom: 10px;">
+                <label for="name" style="display: block; margin-bottom: 5px; color: var(--text);">Nome:</label>
+                <input type="text" id="name" name="name" required style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--text);">
+              </div>
+              <div style="margin-bottom: 10px;">
+                <label for="email" style="display: block; margin-bottom: 5px; color: var(--text);">Email:</label>
+                <input type="email" id="email" name="email" required style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--text);">
+              </div>
+              <div style="margin-bottom: 10px;">
+                <label for="type" style="display: block; margin-bottom: 5px; color: var(--text);">Tipo Richiesta:</label>
+                <select id="type" name="type" required style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--text);">
+                  <option value="">Seleziona...</option>
+                  <option value="candidatura">Candidatura</option>
+                  <option value="collaborazione">Collaborazione</option>
+                  <option value="segnalazione">Segnalazione</option>
+                  <option value="altro">Altro</option>
+                </select>
+              </div>
+              <div style="margin-bottom: 10px;">
+                <label for="message" style="display: block; margin-bottom: 5px; color: var(--text);">Messaggio:</label>
+                <textarea id="message" name="message" required style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--text); resize: vertical;"></textarea>
+              </div>
+              <button type="submit" class="btn primary">Invia Richiesta</button>
+            </form>
+            <div id="form-response" style="margin-top: 10px; color: var(--brand);"></div>
           </div>
         </div>
       </section>
@@ -1159,6 +1186,33 @@
       mobileMenuLinks.forEach(link => {
         link.addEventListener('click', closeMobileMenu);
       });
+
+      (function handleContactForm() {
+        const form = document.getElementById('contact-form');
+        const responseEl = document.getElementById('form-response');
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const formData = new FormData(form);
+          const data = Object.fromEntries(formData);
+          responseEl.textContent = 'Invio in corso...';
+          try {
+            const res = await fetch('/.netlify/functions/submit-contact', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(data)
+            });
+            const result = await res.json();
+            if (res.ok) {
+              responseEl.textContent = 'Richiesta inviata con successo!';
+              form.reset();
+            } else {
+              responseEl.textContent = 'Errore: ' + result.error;
+            }
+          } catch (err) {
+            responseEl.textContent = 'Errore di rete.';
+          }
+        });
+      })();
     </script>
   </body>
 </html>
