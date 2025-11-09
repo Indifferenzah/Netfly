@@ -988,7 +988,7 @@
       async function fetchStatus(host) {
         try {
           const res = await fetch(
-            `https://api.mcsrvstat.us/3/${encodeURIComponent(host)}`
+            `https://api.mcstatus.io/v2/status/java/${encodeURIComponent(host)}`
           );
           if (!res.ok) throw new Error("HTTP " + res.status);
           const data = await res.json();
@@ -1000,7 +1000,7 @@
             text.textContent = "Online";
             players.textContent = data.players?.online ?? 0;
             document.getElementById("server-version").textContent =
-              data.version || "N/D";
+              data.version?.name_raw || "N/D";
           } else {
             dot.classList.remove("online");
             text.textContent = "Offline";
