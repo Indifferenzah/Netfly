@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Account | Valiance</title>
+    <meta
+      name="description"
+      content="Gestisci le tue richieste di contatto con Valiance."
+    />
+    <link rel="icon" href="/pfp.png" />
+    <style>
+      :root {
+        color-scheme: dark light;
+        --bg: #070b10;
+        --panel: #0b1220;
+        --muted: #8aa0b8;
+        --brand: #22d3ee;
+        --brand-2: #8b5cf6;
+        --text: #e6edf3;
+        --border: #132033;
+        --glow: 0 0 24px rgba(34, 211, 238, 0.25),
+          0 0 44px rgba(139, 92, 246, 0.15);
+        --header-translate: 0px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
+          Cantarell, Noto Sans, Helvetica Neue, Arial;
+        background: var(--bg);
+        color: var(--text);
+        overflow-x: hidden;
+        user-select: none;
+      }
+      a {
+        color: var(--brand);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 50;
+        backdrop-filter: blur(10px);
+        background: linear-gradient(
+          180deg,
+          rgba(7, 11, 16, 0.85),
+          rgba(7, 11, 16, 0.45)
+        );
+        border-bottom: 1px solid var(--border);
+        transform: translateY(0);
+        transition: none;
+      }
+      @media (max-width: 768px) {
+        header {
+          display: none;
+        }
+      }
+      .container {
+        width: min(1200px, 92vw);
+        margin: 0 auto;
+      }
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 14px 0;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 800;
+        letter-spacing: 0.4px;
+      }
+      .logo {
+        width: 28px;
+        height: 28px;
+        filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.45));
+      }
+      nav ul {
+        list-style: none;
+        display: flex;
+        gap: 6px;
+        padding: 0;
+        margin: 0;
+        flex-wrap: wrap;
+      }
+      nav a {
+        display: block;
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: 1px solid transparent;
+        transition: 0.2s;
+      }
+      nav a.active,
+      nav a:hover {
+        border-color: var(--border);
+        background: rgba(255, 255, 255, 0.03);
+        text-decoration: none;
+      }
+
+      main, main section, main .container { text-align: center; }
+      #roster h4 { text-align: initial; }
+
+      .hero {
+        position: relative;
+        isolation: isolate;
+        padding: 90px 0 70px;
+        text-align: center;
+        overflow: hidden;
+      }
+      .bg-grid {
+        position: absolute;
+        inset: -20%;
+        opacity: 0.18;
+        background-image: radial-gradient(#22d3ee 1px, transparent 1px);
+        background-size: 22px 22px;
+        mask: linear-gradient(#000, rgba(0, 0, 0, 0.1));
+        z-index: -2;
+        transform: translateZ(0);
+      }
+      canvas#fx {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -1;
+        filter: blur(0.2px);
+        pointer-events: none;
+      }
+      .hero h1 {
+        font-size: clamp(34px, 5vw, 64px);
+        margin: 6px 0 10px;
+        line-height: 1.02;
+        text-shadow: var(--glow);
+      }
+      .hero p {
+        color: var(--muted);
+        font-size: clamp(15px, 2vw, 18px);
+        margin: 0 auto 20px;
+        max-width: 820px;
+      }
+      .cta {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 11px 14px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: linear-gradient(180deg, #0f1720, #0b0f14);
+        color: var(--text);
+        font-weight: 700;
+        letter-spacing: 0.2px;
+        transition: transform 0.12s ease, filter 0.15s;
+      }
+      .btn.primary {
+        border-color: #155e75;
+        background: linear-gradient(180deg, #0ea5b7, #0c4a6e);
+        color: #dff8ff;
+        box-shadow: 0 8px 30px rgba(14, 165, 183, 0.25);
+      }
+      .btn:hover {
+        filter: brightness(1.06);
+        text-decoration: none;
+        transform: translateY(-1px);
+      }
+
+      section {
+        padding: 56px 0;
+      }
+      h2 {
+        font-size: clamp(22px, 2.8vw, 30px);
+        margin: 0 0 16px;
+      }
+      .grid {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(12, 1fr);
+      }
+      .card {
+        background: linear-gradient(
+          180deg,
+          var(--panel),
+          rgba(11, 15, 20, 0.9)
+        );
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 16px;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      }
+      .muted {
+        color: var(--muted);
+      }
+
+      footer {
+        border-top: 1px solid var(--border);
+        padding: 22px 0 42px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .col-12 {
+        grid-column: 1 / -1;
+      }
+      .col-8 {
+        grid-column: span 8;
+      }
+      .col-6 {
+        grid-column: span 6;
+      }
+      .col-4 {
+        grid-column: span 4;
+      }
+      @media (max-width: 980px) {
+        .col-8 {
+          grid-column: 1 / -1;
+        }
+      }
+      @media (max-width: 860px) {
+        .col-6,
+        .col-4 {
+          grid-column: 1 / -1;
+        }
+      }
+
+      .requests {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .request {
+        background: linear-gradient(
+          180deg,
+          var(--panel),
+          rgba(11, 15, 20, 0.9)
+        );
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 16px;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      }
+      .request-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+      .request-status {
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .status-open {
+        background: rgba(34, 197, 94, 0.2);
+        color: #22c55e;
+      }
+      .status-closed {
+        background: rgba(239, 68, 68, 0.2);
+        color: #ef4444;
+      }
+      .request-details {
+        text-align: left;
+      }
+      .request-field {
+        margin-bottom: 8px;
+      }
+      .request-field strong {
+        color: var(--brand);
+      }
+      .filters {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+      .filter-btn {
+        padding: 8px 16px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.03);
+        color: var(--text);
+        cursor: pointer;
+        transition: 0.2s;
+      }
+      .filter-btn.active {
+        border-color: var(--brand);
+        background: rgba(34, 211, 238, 0.1);
+      }
+      .filter-btn:hover {
+        filter: brightness(1.1);
+      }
+      .loading {
+        text-align: center;
+        color: var(--muted);
+      }
+      .error {
+        text-align: center;
+        color: #ef4444;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container nav">
+        <div class="brand">
+          <svg
+            class="logo"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <defs>
+              <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#22d3ee" />
+                <stop offset="100%" stop-color="#8b5cf6" />
+              </linearGradient>
+            </defs>
+            <path
+              d="M3 12l6.5-6.5L12 8l2.5-2.5L21 12l-2 2-4.5-4.5L12 12l-2.5-2.5L5 14l-2-2z"
+              fill="url(#g)"
+            />
+          </svg>
+          <span>Valiance</span>
+        </div>
+        <nav>
+          <ul id="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/#roster">Staff</a></li>
+            <li><a href="/#events">Eventi</a></li>
+            <li><a href="/#rules">Regole</a></li>
+            <li><a href="/#gallery">Galleria</a></li>
+            <li><a href="/#status">Server</a></li>
+            <li><a href="/#contact">Contatti</a></li>
+            <li><a href="/account" class="active">Account</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main style="padding-top: 70px;">
+      <section class="hero" id="home">
+        <div class="bg-grid" aria-hidden="true"></div>
+        <canvas id="fx" aria-hidden="true"></canvas>
+        <div class="container">
+          <h1>Account</h1>
+          <p>
+            Visualizza e gestisci le tue richieste di contatto.
+          </p>
+        </div>
+      </section>
+
+      <section id="requests">
+        <div class="container">
+          <h2>Le Tue Richieste</h2>
+          <div class="filters">
+            <button class="filter-btn active" data-filter="all">Tutte</button>
+            <button class="filter-btn" data-filter="open">Aperte</button>
+            <button class="filter-btn" data-filter="closed">Chiuse</button>
+          </div>
+          <div id="requests-container" class="requests">
+            <div class="loading">Caricamento richieste...</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          © <span id="year"></span> Valiance. Non affiliato a Mojang/Microsoft.
+        </div>
+        <span>
+          -by @<a href="https://github.com/Indifferenzah" target="_blank">indifferenzah</a>
+        </span>
+      </div>
+    </footer>
+
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      const requestsContainer = document.getElementById('requests-container');
+      const filterButtons = document.querySelectorAll('.filter-btn');
+      let allRequests = [];
+
+      async function loadRequests() {
+        try {
+          const endpoint = window.location.hostname.includes('vercel.app')
+            ? '/api/get-requests'
+            : '/.netlify/functions/get-requests';
+          const res = await fetch(endpoint);
+          if (!res.ok) throw new Error('Errore nel caricamento');
+          const requests = await res.json();
+          allRequests = requests;
+          displayRequests('all');
+        } catch (error) {
+          requestsContainer.innerHTML = '<div class="error">Errore nel caricamento delle richieste.</div>';
+          console.error(error);
+        }
+      }
+
+      function displayRequests(filter) {
+        let filteredRequests = allRequests;
+        if (filter === 'open') {
+          filteredRequests = allRequests.filter(r => r.status === 'Aperta');
+        } else if (filter === 'closed') {
+          filteredRequests = allRequests.filter(r => r.status === 'Chiusa');
+        }
+
+        if (filteredRequests.length === 0) {
+          requestsContainer.innerHTML = '<div class="muted">Nessuna richiesta trovata.</div>';
+          return;
+        }
+
+        const html = filteredRequests.map(request => `
+          <div class="request">
+            <div class="request-header">
+              <div>
+                <strong>Richiesta #${request.id}</strong>
+                <div class="muted">${new Date(request.timestamp).toLocaleString('it-IT')}</div>
+              </div>
+              <div class="request-status ${request.status === 'Aperta' ? 'status-open' : 'status-closed'}">
+                ${request.status}
+              </div>
+            </div>
+            <div class="request-details">
+              <div class="request-field"><strong>IGN:</strong> ${request.ign}</div>
+              <div class="request-field"><strong>Discord:</strong> ${request.discord_username}</div>
+              <div class="request-field"><strong>Nome:</strong> ${request.name}</div>
+              <div class="request-field"><strong>Email:</strong> ${request.email}</div>
+              <div class="request-field"><strong>Tipo:</strong> ${request.type}</div>
+              <div class="request-field"><strong>Messaggio:</strong> ${request.message}</div>
+              ${request.response ? `<div class="request-field"><strong>Risposta:</strong> ${request.response}</div>` : ''}
+              ${request.responder ? `<div class="request-field"><strong>Risposto da:</strong> ${request.responder}</div>` : ''}
+            </div>
+          </div>
+        `).join('');
+        requestsContainer.innerHTML = html;
+      }
+
+      filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          displayRequests(btn.dataset.filter);
+        });
+      });
+
+      loadRequests();
+
+      const canvas = document.getElementById("fx");
+      const ctx = canvas.getContext("2d");
+      let W,
+        H,
+        particles = [],
+        clickParticles = [];
+      function resize() {
+        W = canvas.width = innerWidth;
+        H = canvas.height = innerHeight;
+      }
+      window.addEventListener("resize", () => {
+        resize();
+        spawn(true);
+      });
+      function rand(a, b) {
+        return Math.random() * (b - a) + a;
+      }
+      function colorMix(t) {
+        return `rgba(${34 + t * (139 - 34)}, ${211 - t * (211 - 92)}, ${
+          238 - t * (238 - 246)
+        }, ${0.16 + 0.12 * Math.sin(performance.now() / 800)})`;  
+      }
+      function spawn(reset = false) {
+        const count = Math.max(120, Math.floor((W * H) / 10000));
+        if (reset) particles = [];
+        while (particles.length < count) {
+          particles.push({
+            x: rand(0, W),
+            y: rand(0, H),
+            vx: rand(-0.2, 0.2),
+            vy: rand(0.15, 0.45),
+            r: rand(0.6, 2.2),
+          });
+        }
+      }
+      let mx = 0,
+        my = 0;
+      window.addEventListener("mousemove", (e) => {
+        mx = e.clientX;
+        my = e.clientY;
+        for (let i = 0; i < 2; i++) {
+          clickParticles.push({
+            x: e.clientX + rand(-10, 10),
+            y: e.clientY + rand(-10, 10),
+            vx: rand(-2, 2),
+            vy: rand(-2, 2),
+            r: rand(1, 3),
+            life: 60,
+          });
+        }
+      });
+      window.addEventListener("click", (e) => {
+        for (let i = 0; i < 10; i++) {
+          clickParticles.push({
+            x: e.clientX + rand(-20, 20),
+            y: e.clientY + rand(-20, 20),
+            vx: rand(-4, 4),
+            vy: rand(-4, 4),
+            r: rand(2, 5),
+            life: 120,
+          });
+        }
+      });
+      function step() {
+        ctx.clearRect(0, 0, W, H);
+        const t = (Math.sin(performance.now() / 1200) + 1) / 2;
+        particles.forEach((p) => {
+          const dx = mx - p.x,
+            dy = my - p.y;
+          const dist = Math.hypot(dx, dy) || 1;
+          const force = Math.min(40 / dist, 0.12);
+          p.vx += ((force * dx) / dist) * 0.02;
+          p.vy += ((force * dy) / dist) * 0.02;
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vx *= 0.985;
+          p.vy *= 0.985;
+          if (p.x < -10) p.x = W + 10;
+          if (p.x > W + 10) p.x = -10;
+          if (p.y < -10) p.y = H + 10;
+          if (p.y > H + 10) p.y = -10;
+          ctx.beginPath();
+          ctx.fillStyle = colorMix(t);
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+        });
+        clickParticles = clickParticles.filter((p) => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vx *= 0.98;
+          p.vy *= 0.98;
+          p.life--;
+          if (p.life > 0) {
+            ctx.beginPath();
+            ctx.fillStyle = `rgba(34, 211, 238, ${p.life / 120})`;
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fill();
+            return true;
+          }
+          return false;
+        });
+        requestAnimationFrame(step);
+      }
+      resize();
+      spawn(true);
+      step();
+    </script>
+  </body>
+</html>
