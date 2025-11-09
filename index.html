@@ -509,6 +509,39 @@
           grid-column: 1 / -1;
         }
       }
+
+      /* Stile del pulsante */
+      .btn {
+        display: inline-block;
+        padding: 12px 24px;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.25s ease;
+        cursor: pointer;
+      }
+
+      /* Variante "primary" */
+      .btn.primary {
+        background-color: #5865F2; /* colore Discord */
+        color: white;
+        border: none;
+        box-shadow: 0 4px 14px rgba(88, 101, 242, 0.4);
+      }
+
+      /* Effetto hover */
+      .btn.primary:hover {
+        background-color: #4752C4;
+        box-shadow: 0 6px 18px rgba(88, 101, 242, 0.6);
+        transform: translateY(-2px);
+      }
+
+      /* Effetto click */
+      .btn.primary:active {
+        transform: translateY(0);
+        box-shadow: 0 3px 10px rgba(88, 101, 242, 0.4);
+      }
     </style>
   </head>
   <body>
@@ -537,13 +570,11 @@
         </div>
         <nav>
           <ul id="nav-links">
-            <li><a href="#about">Chi siamo</a></li>
             <li><a href="#roster">Staff</a></li>
             <li><a href="#events">Eventi</a></li>
             <li><a href="#rules">Regole</a></li>
             <li><a href="#gallery">Galleria</a></li>
             <li><a href="#status">Server</a></li>
-            <li><a href="#discord">Discord</a></li>
             <li><a href="#contact">Contatti</a></li>
           </ul>
         </nav>
@@ -562,15 +593,12 @@
             conquista i server.
           </p>
           <div class="cta" data-depth="0.25">
-            <a
-              class="btn primary"
-              href="https://discord.gg/NACE9V7kfx"
-              target="_blank"
-              rel="noopener"
-              >Entra su Discord</a
-            >
-            <a class="btn" href="#about">Scopri di più</a>
-          </div>
+              <button class="btn primary" onclick="window.open('/redirectclan', '_blank')">
+                Entra su Discord
+              </button>
+              <button class="btn secondary" onclick="window.location.href='/discover'">
+                Scopri di Più
+              </button>
         </div>
       </section>
 
@@ -780,20 +808,12 @@
               Candidature e collaborazioni sul nostro Discord.
             </p>
             <p>
-              <a
-                class="btn primary"
-                href="https://discord.gg/NACE9V7kfx"
-                target="_blank"
-                rel="noopener"
-                >Discord Clan</a
-              >
-              <a
-              class="btn primary"
-              href="https://discord.gg/YmZHAeSGzN"
-              target="_blank"
-              rel="noopener"
-              >Discord Gang</a
-              >
+              <button class="btn primary" onclick="window.open('/redirectclan', '_blank')">
+                Discord Clan
+              </button>
+              <button class="btn primary" onclick="window.open('/redirectgang', '_blank')">
+                Discord Gang
+              </button>
             </p>
           </div>
         </div>
@@ -838,6 +858,17 @@
         document.querySelectorAll("main section[id]")
       );
       const navLinks = Array.from(document.querySelectorAll("#nav-links a"));
+      const titleMap = {
+        home: "Home | Valiance",
+        about: "Chi siamo | Valiance",
+        roster: "Staff | Valiance",
+        events: "Eventi | Valiance",
+        rules: "Regole | Valiance",
+        gallery: "Galleria | Valiance",
+        status: "Server | Valiance",
+        discord: "Discord | Valiance",
+        contact: "Contatti | Valiance"
+      };
       const setActive = (id) =>
         navLinks.forEach((a) =>
           a.classList.toggle("active", a.getAttribute("href") === "#" + id)
@@ -845,7 +876,10 @@
       const obs = new IntersectionObserver(
         (entries) => {
           entries.forEach((e) => {
-            if (e.isIntersecting) setActive(e.target.id);
+            if (e.isIntersecting) {
+              setActive(e.target.id);
+              document.title = titleMap[e.target.id] || "Valiance";
+            }
           });
         },
         { threshold: 0.55 }
