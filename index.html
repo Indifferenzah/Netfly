@@ -832,10 +832,8 @@
 
 
     <script>
-      // Footer year
       document.getElementById("year").textContent = new Date().getFullYear();
 
-      // Smooth scroll + active link highlight
       const sections = Array.from(
         document.querySelectorAll("main section[id]")
       );
@@ -854,7 +852,6 @@
       );
       sections.forEach((s) => obs.observe(s));
 
-      // Parallax for hero content
       const parallax = document.getElementById("parallax");
       const depthNodes = parallax
         ? Array.from(parallax.querySelectorAll("[data-depth]"))
@@ -879,7 +876,6 @@
       }
       window.addEventListener("mousemove", onMove, { passive: true });
 
-      // Canvas particles reacting to mouse and clicks
       const canvas = document.getElementById("fx");
       const ctx = canvas.getContext("2d");
       let W,
@@ -920,7 +916,6 @@
       window.addEventListener("mousemove", (e) => {
         mx = e.clientX;
         my = e.clientY;
-        // Add small particles on mouse move
         for (let i = 0; i < 2; i++) {
           clickParticles.push({
             x: e.clientX + rand(-10, 10),
@@ -933,7 +928,6 @@
         }
       });
       window.addEventListener("click", (e) => {
-        // Add more particles on click
         for (let i = 0; i < 10; i++) {
           clickParticles.push({
             x: e.clientX + rand(-20, 20),
@@ -948,7 +942,6 @@
       function step() {
         ctx.clearRect(0, 0, W, H);
         const t = (Math.sin(performance.now() / 1200) + 1) / 2;
-        // Update and draw background particles
         particles.forEach((p) => {
           const dx = mx - p.x,
             dy = my - p.y;
@@ -969,7 +962,6 @@
           ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
           ctx.fill();
         });
-        // Update and draw click particles
         clickParticles = clickParticles.filter((p) => {
           p.x += p.vx;
           p.y += p.vy;
@@ -991,7 +983,6 @@
       spawn(true);
       step();
 
-      // Server status fetch via mcsrvstat.us when IP changed
       const ipEl = document.getElementById("server-ip");
       const ip = ipEl.textContent.trim();
       async function fetchStatus(host) {
@@ -1021,7 +1012,6 @@
       }
       if (ip && ip !== "play.tuo-server.it") fetchStatus(ip);
 
-      // Discord avatar fetcher via Netlify Function + fallback CDN default
       async function applyDiscordAvatars() {
         const members = Array.from(
           document.querySelectorAll(".member[data-discord-id]")
@@ -1063,7 +1053,6 @@
       }
       applyDiscordAvatars();
 
-      // Discord widgets: online and total members for Clan and Gang
       (function fetchDiscordWidgets(){
         const endpoints = [
           { url: 'https://discord.com/api/guilds/1350073876339490826/widget.json', onlineEl: '#discord1-online', totalEl: '#discord1-total' },
@@ -1087,7 +1076,6 @@
         });
       })();
 
-      // Copy Discord ID on member card click with notification
       (function enableCopyDiscordId() {
         const members = Array.from(document.querySelectorAll(".member"));
         const notification = document.getElementById("notification");
@@ -1119,9 +1107,6 @@
         });
       })();
 
-      // Header always visible: removed hide/show logic
-
-      // Mobile menu toggle
       const mobileMenuBtn = document.getElementById('mobile-menu-btn');
       const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
       const mobileMenuClose = document.getElementById('mobile-menu-close');
