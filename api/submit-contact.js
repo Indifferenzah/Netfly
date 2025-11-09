@@ -1,13 +1,17 @@
 const { WebhookClient } = require('discord.js');
 
 export default async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
   if (req.method !== 'POST') {
     res.setHeader('Allow', ['POST']);
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    const { ign, discord_username, name, email, type, message } = req.body;
+    const { ign, discord_username, name, type, message } = req.body;
 
     if (!ign || !discord_username || !name || !email || !type || !message) {
       return res.status(400).json({ error: 'Tutti i campi sono obbligatori' });
