@@ -13,7 +13,7 @@ export default async function handler(req, res) {
   try {
     const { ign, discord_username, name, type, message } = req.body;
 
-    if (!ign || !discord_username || !name || !email || !type || !message) {
+    if (!ign || !discord_username || !name || !type || !message) {
       return res.status(400).json({ error: 'Tutti i campi sono obbligatori' });
     }
 
@@ -31,7 +31,7 @@ export default async function handler(req, res) {
         { name: 'IGN', value: ign, inline: true },
         { name: 'Username Discord', value: discord_username, inline: true },
         { name: 'Nome', value: name, inline: true },
-        { name: 'Email', value: email, inline: true },
+
         { name: 'Tipo Richiesta', value: type, inline: true },
         { name: 'Messaggio', value: message, inline: false },
         { name: 'Stato', value: 'Aperta', inline: true },
