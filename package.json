@@ -4,5 +4,9 @@
     "@vercel/speed-insights": "^1.2.0",
     "discord.js": "^14.24.2",
     "pnpm": "^10.20.0"
+  },
+  "devDependencies": {
+    "clean-css-cli": "^5.6.3",
+    "terser": "^5.44.1"
   }
 }
