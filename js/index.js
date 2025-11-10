@@ -1,0 +1,302 @@
+document.getElementById("year").textContent = new Date().getFullYear();
+
+const sections = Array.from(
+  document.querySelectorAll("main section[id]")
+);
+const navLinks = Array.from(document.querySelectorAll("#nav-links a"));
+const titleMap = {
+  home: "Home | Valiance",
+  about: "Chi siamo | Valiance",
+  roster: "Staff | Valiance",
+  events: "Eventi | Valiance",
+  rules: "Regole | Valiance",
+  gallery: "Galleria | Valiance",
+  status: "Server | Valiance",
+  discord: "Discord | Valiance",
+  contact: "Contatti | Valiance"
+};
+const setActive = (id) =>
+  navLinks.forEach((a) =>
+    a.classList.toggle("active", a.getAttribute("href") === "#" + id)
+  );
+const obs = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) {
+        setActive(e.target.id);
+        document.title = titleMap[e.target.id] || "Valiance";
+      }
+    });
+  },
+  { threshold: 0.55 }
+);
+sections.forEach((s) => obs.observe(s));
+
+const parallax = document.getElementById("parallax");
+const depthNodes = parallax
+  ? Array.from(parallax.querySelectorAll("[data-depth]"))
+  : [];
+let mouseX = 0,
+  mouseY = 0;
+let rafId = 0;
+function onMove(e) {
+  const rect = document.body.getBoundingClientRect();
+  mouseX = (e.clientX - rect.width / 2) / rect.width;
+  mouseY = (e.clientY - window.innerHeight / 2) / window.innerHeight;
+  if (!rafId) rafId = requestAnimationFrame(updateParallax);
+}
+function updateParallax() {
+  depthNodes.forEach((node) => {
+    const d = parseFloat(node.dataset.depth || "0");
+    const tx = -mouseX * d * 30;
+    const ty = -mouseY * d * 30;
+    node.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
+  });
+  rafId = 0;
+}
+window.addEventListener("mousemove", onMove, { passive: true });
+
+const canvas = document.getElementById("fx");
+const ctx = canvas.getContext("2d");
+let W,
+  H,
+  particles = [],
+  clickParticles = [];
+function resize() {
+  W = canvas.width = innerWidth;
+  H = canvas.height = innerHeight;
+}
+window.addEventListener("resize", () => {
+  resize();
+  spawn(true);
+});
+function rand(a, b) {
+  return Math.random() * (b - a) + a;
+}
+function colorMix(t) {
+  return `rgba(${34 + t * (139 - 34)}, ${211 - t * (211 - 92)}, ${238 - t * (238 - 246)
+    }, ${0.16 + 0.12 * Math.sin(performance.now() / 800)})`;
+}
+function spawn(reset = false) {
+  const count = Math.max(120, Math.floor((W * H) / 10000));
+  if (reset) particles = [];
+  while (particles.length < count) {
+    particles.push({
+      x: rand(0, W),
+      y: rand(0, H),
+      vx: rand(-0.2, 0.2),
+      vy: rand(0.15, 0.45),
+      r: rand(0.6, 2.2),
+    });
+  }
+}
+let mx = 0,
+  my = 0;
+window.addEventListener("mousemove", (e) => {
+  mx = e.clientX;
+  my = e.clientY;
+  for (let i = 0; i < 2; i++) {
+    clickParticles.push({
+      x: e.clientX + rand(-10, 10),
+      y: e.clientY + rand(-10, 10),
+      vx: rand(-2, 2),
+      vy: rand(-2, 2),
+      r: rand(1, 3),
+      life: 60,
+    });
+  }
+});
+window.addEventListener("click", (e) => {
+  for (let i = 0; i < 10; i++) {
+    clickParticles.push({
+      x: e.clientX + rand(-20, 20),
+      y: e.clientY + rand(-20, 20),
+      vx: rand(-4, 4),
+      vy: rand(-4, 4),
+      r: rand(2, 5),
+      life: 120,
+    });
+  }
+});
+function step() {
+  ctx.clearRect(0, 0, W, H);
+  const t = (Math.sin(performance.now() / 1200) + 1) / 2;
+  particles.forEach((p) => {
+    p.vx += (Math.random() - 0.5) * 0.02;
+    p.vy += 0.01 + (Math.random() - 0.5) * 0.01;
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vx *= 0.95;
+    p.vy *= 0.95;
+    if (p.x < -10) p.x = W + 10;
+    if (p.x > W + 10) p.x = -10;
+    if (p.y < -10) p.y = H + 10;
+    if (p.y > H + 10) p.y = -10;
+    ctx.beginPath();
+    ctx.fillStyle = colorMix(t);
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fill();
+  });
+clickParticles = clickParticles.filter((p) => {
+  p.x += p.vx;
+  p.y += p.vy;
+  p.vx *= 0.98;
+  p.vy *= 0.98;
+  p.life--;
+  if (p.life > 0) {
+    ctx.beginPath();
+    ctx.fillStyle = `rgba(34, 211, 238, ${p.life / 120})`;
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fill();
+    return true;
+  }
+  return false;
+});
+requestAnimationFrame(step);
+}
+resize();
+spawn(true);
+step();
+
+const ipEl = document.getElementById("server-ip");
+const ip = ipEl.textContent.trim();
+async function fetchStatus(host) {
+  try {
+    const res = await fetch(
+      `https://api.mcstatus.io/v2/status/java/${encodeURIComponent(host)}`
+    );
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const data = await res.json();
+    const dot = document.getElementById("status-dot");
+    const text = document.getElementById("status-text");
+    const players = document.getElementById("players-online");
+    if (data?.online) {
+      dot.classList.add("online");
+      text.textContent = "Online";
+      players.textContent = data.players?.online ?? 0;
+      document.getElementById("server-version").textContent =
+        data.version?.name_raw || "N/D";
+    } else {
+      dot.classList.remove("online");
+      text.textContent = "Offline";
+      players.textContent = "--";
+    }
+  } catch (e) {
+    console.warn("Status fetch failed", e);
+  }
+}
+if (ip && ip !== "play.tuo-server.it") fetchStatus(ip);
+
+async function applyDiscordAvatars() {
+  const members = Array.from(
+    document.querySelectorAll(".member[data-discord-id]")
+  );
+  await Promise.all(
+    members.map(async (m) => {
+      const id = m.getAttribute("data-discord-id");
+      const avatarEl = m.querySelector(".avatar");
+      const fallback = () => {
+        try {
+          const idx = Number((BigInt(id) >> 22n) % 6n);
+          const url = `https://cdn.discordapp.com/embed/avatars/${idx}.png`;
+          avatarEl.style.background = `center / cover no-repeat url('${url}')`;
+          avatarEl.style.border = "1px solid #1f3a5a";
+          avatarEl.textContent = "";
+        } catch (e) {
+          avatarEl.textContent = "";
+        }
+      };
+      try {
+        const endpoint = window.location.hostname.includes("vercel.app")
+          ? `/api/get-avatar?id=${encodeURIComponent(id)}`
+          : `/.netlify/functions/get-avatar?id=${encodeURIComponent(id)}`;
+
+        const res = await fetch(endpoint);
+
+        if (!res.ok) return fallback();
+        const data = await res.json();
+        const url = data?.url;
+        if (!url) return fallback();
+        avatarEl.style.background = `center / cover no-repeat url('${url}')`;
+        avatarEl.style.border = "1px solid #1f3a5a";
+        avatarEl.textContent = "";
+      } catch {
+        fallback();
+      }
+    })
+  );
+}
+applyDiscordAvatars();
+
+(function fetchDiscordWidgets() {
+  const endpoints = [
+    { url: 'https://discord.com/api/guilds/1350073876339490826/widget.json', onlineEl: '#discord1-online', totalEl: '#discord1-total' },
+    { url: 'https://discord.com/api/guilds/1436756175310950588/widget.json', onlineEl: '#discord2-online', totalEl: '#discord2-total' },
+  ];
+  endpoints.forEach(async ({ url, onlineEl, totalEl }) => {
+    const onlineNode = document.querySelector(onlineEl);
+    const totalNode = document.querySelector(totalEl);
+    try {
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      const online = typeof data.presence_count === 'number' ? data.presence_count : (data.members?.length ?? 'N/D');
+      const total = data.approximate_member_count || 'N/D';
+      if (onlineNode) onlineNode.textContent = online;
+      if (totalNode) totalNode.textContent = total;
+    } catch (e) {
+      if (onlineNode) onlineNode.textContent = 'N/D';
+      if (totalNode) totalNode.textContent = 'N/D';
+    }
+  });
+})();
+
+(function enableCopyDiscordId() {
+  const members = Array.from(document.querySelectorAll(".member"));
+  const notification = document.getElementById("notification");
+  function showNotification() {
+    notification.classList.add("show");
+    setTimeout(() => {
+      hideNotification();
+    }, 3000);
+  }
+  window.hideNotification = function () {
+    notification.classList.remove("show");
+  };
+  members.forEach((m) => {
+    m.style.cursor = "pointer";
+    m.addEventListener("click", async () => {
+      const id = m.getAttribute("data-discord-id");
+      if (!id) return;
+      try {
+        await navigator.clipboard.writeText(id);
+        showNotification();
+      } catch (e) {
+        const ta = document.createElement("textarea");
+        ta.value = id;
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand("copy"); showNotification(); } finally { document.body.removeChild(ta); }
+      }
+    });
+  });
+})();
+
+const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+const mobileMenuClose = document.getElementById('mobile-menu-close');
+const mobileMenuLinks = mobileMenuOverlay.querySelectorAll('a');
+
+function toggleMobileMenu() {
+  mobileMenuOverlay.classList.toggle('show');
+}
+
+function closeMobileMenu() {
+  mobileMenuOverlay.classList.remove('show');
+}
+
+mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+mobileMenuClose.addEventListener('click', closeMobileMenu);
+mobileMenuLinks.forEach(link => {
+  link.addEventListener('click', closeMobileMenu);
+});
