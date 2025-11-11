@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import { supabase } from './db.js';
 
 export default async function handler(req, res) {
   res.setHeader('Content-Type', 'application/json');
@@ -32,21 +33,30 @@ export default async function handler(req, res) {
   // Generate a random 6-digit code
   const code = Math.floor(100000 + Math.random() * 900000).toString();
 
-  // Store the code temporarily (in a real app, use a database or Redis)
-  // For simplicity, we'll use a global map (not recommended for production)
-  if (!global.registrationCodes) {
-    global.registrationCodes = new Map();
+  // Store the code in Supabase database
+  const { error: insertError } = await supabase
+    .from('registration_codes')
+    .upsert({
+      email: email.toLowerCase(),
+      code,
+      expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() // 24 hours
+    }, {
+      onConflict: 'email'
+    });
+
+  if (insertError) {
+    console.error('Error storing code:', insertError);
+    return res.status(500).json({ error: 'Failed to store code' });
   }
-  global.registrationCodes.set(email, { code, timestamp: Date.now() });
 
   // Send email using nodemailer
-  const transporter = nodemailer.createTransporter({
-    host: process.env.SMTP_HOST,
+  const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST || 'smtp.protonmail.ch',
     port: process.env.SMTP_PORT || 587,
-    secure: false, // true for 465, false for other ports
+    secure: false, // STARTTLS su 587
     auth: {
       user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
+      pass: process.env.SMTP_PASS, // il token SMTP
     },
   });
 
@@ -55,8 +65,8 @@ export default async function handler(req, res) {
       from: process.env.SMTP_FROM || 'account@valiancev2.it',
       to: email,
       subject: 'Codice di Registrazione - Valiance',
-      text: `Il tuo codice di registrazione è: ${code}\n\nQuesto codice scadrà tra 10 minuti.`,
-      html: `<p>Il tuo codice di registrazione è: <strong>${code}</strong></p><p>Questo codice scadrà tra 10 minuti.</p>`,
+      text: `Il tuo codice di registrazione è: ${code}\n\nQuesto codice scadrà tra 24 ore.`,
+      html: `<p>Il tuo codice di registrazione è: <strong>${code}</strong></p><p>Questo codice scadrà tra 24 ore.</p>`,
     });
 
     res.status(200).json({ message: 'Code sent successfully' });

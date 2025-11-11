@@ -8,82 +8,35 @@
   <meta name="description" content="Registrati al forum del Clan Valiance" />
   <link rel="icon" href="/pfp.png" />
   <link rel="stylesheet" href="../css/index.min.css">
-  <style>
-    body {
-      background: linear-gradient(135deg, #0a0e1a 0%, #070b10 50%, #0b1220 100%);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
-    }
-    .register-container {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 40px;
-      width: 100%;
-      max-width: 400px;
-    }
-    .register-container h1 {
-      text-align: center;
-      margin-bottom: 30px;
-      color: var(--brand);
-    }
-    .form-group {
-      margin-bottom: 20px;
-    }
-    .form-group label {
-      display: block;
-      margin-bottom: 5px;
-      color: var(--text);
-    }
-    .form-group input {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: var(--bg);
-      color: var(--text);
-      font-size: 16px;
-    }
-    .btn {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      background: var(--brand);
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-      margin-bottom: 10px;
-    }
-    .btn:hover {
-      opacity: 0.9;
-    }
-    .login-link {
-      text-align: center;
-      color: var(--muted);
-    }
-    .login-link a {
-      color: var(--brand);
-      text-decoration: none;
-    }
-    .error {
-      color: #ef4444;
-      text-align: center;
-      margin-bottom: 10px;
-    }
-    .success {
-      color: #10b981;
-      text-align: center;
-      margin-bottom: 10px;
-    }
-  </style>
+  <link rel="stylesheet" href="register.css">
 </head>
 
 <body>
-  <div class="register-container">
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <svg class="logo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#22d3ee" />
+              <stop offset="100%" stop-color="#8b5cf6" />
+            </linearGradient>
+          </defs>
+          <path d="M3 12l6.5-6.5L12 8l2.5-2.5L21 12l-2 2-4.5-4.5L12 12l-2.5-2.5L5 14l-2-2z" fill="url(#g)" />
+        </svg>
+        <span>Valiance</span>
+      </div>
+      <nav>
+        <ul id="nav-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/forum">Forum</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="register-container">
     <h1>Registrati</h1>
     <div id="error-message" class="error" style="display: none;"></div>
     <div id="success-message" class="success" style="display: none;"></div>
@@ -114,7 +67,23 @@
     <div class="login-link">
       Hai già un account? <a href="login.html">Accedi</a>
     </div>
-  </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div>
+        © <span id="year"></span> Valiance. Non affiliato a Mojang/Microsoft.
+      </div>
+      <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+        <a href="/policy/privacy">Privacy Policy</a>
+        <a href="/policy/cookie">Cookie Policy</a>
+        <span>
+          -by @<a href="https://github.com/Indifferenzah" target="_blank">indifferenzah</a>
+        </span>
+      </div>
+    </div>
+  </footer>
 
   <script type="module">
     import { signUp, getCurrentUser } from './auth.js';
@@ -133,6 +102,10 @@
         document.getElementById('error-message').style.display = 'block';
         return;
       }
+
+      const btn = document.getElementById('send-code-btn');
+      btn.disabled = true;
+      btn.textContent = 'Invio...';
 
       // Send registration code via local API
       try {
@@ -159,14 +132,16 @@
         document.getElementById('error-message').textContent = error.message;
         document.getElementById('error-message').style.display = 'block';
         document.getElementById('success-message').style.display = 'none';
+        btn.disabled = false;
+        btn.textContent = 'Invia Codice';
       }
     });
 
     document.getElementById('register-form').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const registrationCode = document.getElementById('registration-code').value;
-      const username = document.getElementById('username').value;
-      const email = document.getElementById('email').value;
+      const registrationCode = document.getElementById('registration-code').value.trim();
+      const username = document.getElementById('username').value.trim();
+      const email = document.getElementById('email').value.trim().toLowerCase();
       const password = document.getElementById('password').value;
 
       // Verify registration code via local API

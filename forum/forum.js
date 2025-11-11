@@ -1,8 +1,7 @@
 // Forum functionality
+import { supabase } from './auth.js';
+
 let currentCategory = null;
-let threads = JSON.parse(localStorage.getItem('forum-threads')) || {};
-let users = JSON.parse(localStorage.getItem('forum-users')) || {};
-let onlineUsers = JSON.parse(localStorage.getItem('forum-online-users')) || [];
 let currentUser = null;
 
 // Function to set current user from auth.js
@@ -22,64 +21,95 @@ function setupEventListeners() {
 }
 
 // Load threads for a category
-function loadThreads(category) {
+async function loadThreads(category) {
   currentCategory = category;
   const threadsList = document.getElementById('threads-list');
   const threadView = document.getElementById('thread-view');
   threadView.style.display = 'none';
   threadsList.style.display = 'block';
 
-  const categoryThreads = threads[category] || [];
+  try {
+    const { data: discussions, error } = await supabase
+      .from('discussions')
+      .select('*')
+      .eq('category', category)
+      .order('created_at', { ascending: false });
 
-  if (categoryThreads.length === 0) {
-    threadsList.innerHTML = `
-      <div style="text-align: center; padding: 40px 20px;">
-        <p style="color: var(--muted); margin-bottom: 20px;">Nessuna discussione ancora. Sii il primo a creare un thread!</p>
-        <button class="btn primary" onclick="createNewThread()">Crea Nuovo Thread</button>
-      </div>
-    `;
-  } else {
-    threadsList.innerHTML = categoryThreads.map(thread => `
-      <div class="thread">
-        <div>
-          <div class="thread-title">${thread.title}</div>
-          <div class="thread-meta">da ${thread.author} - ${new Date(thread.date).toLocaleDateString()}</div>
+    if (error) throw error;
+
+    if (!discussions || discussions.length === 0) {
+      threadsList.innerHTML = `
+        <div style="text-align: center; padding: 40px 20px;">
+          <p style="color: var(--muted); margin-bottom: 20px;">Nessuna discussione ancora. Sii il primo a creare un thread!</p>
+          <button class="btn primary" onclick="createNewThread()">Crea Nuovo Thread</button>
         </div>
-        <button class="btn" onclick="viewThread('${category}', '${thread.id}')">Visualizza</button>
-        ${currentUser && currentUser.isAdmin ? `<button class="btn" onclick="deleteThread('${category}', '${thread.id}')">Elimina</button>` : ''}
-      </div>
-    `).join('');
+      `;
+    } else {
+      threadsList.innerHTML = discussions.map(thread => `
+        <div class="thread">
+          <div>
+            <div class="thread-title">${thread.title}</div>
+            <div class="thread-meta">da ${thread.author} - ${new Date(thread.created_at).toLocaleDateString()}</div>
+          </div>
+          <button class="btn" onclick="viewThread('${category}', '${thread.id}')">Visualizza</button>
+          ${currentUser && currentUser.isAdmin ? `<button class="btn" onclick="deleteThread('${category}', '${thread.id}')">Elimina</button>` : ''}
+        </div>
+      `).join('');
+    }
+  } catch (error) {
+    console.error('Error loading threads:', error);
+    threadsList.innerHTML = '<p style="color: red;">Errore nel caricamento delle discussioni.</p>';
   }
 }
 
 // View a specific thread
-function viewThread(category, threadId) {
-  const thread = threads[category].find(t => t.id === threadId);
-  if (!thread) return;
-
+async function viewThread(category, threadId) {
   const threadView = document.getElementById('thread-view');
   const threadsList = document.getElementById('threads-list');
   threadsList.style.display = 'none';
   threadView.style.display = 'block';
 
-  let repliesHtml = '';
-  if (thread.replies && thread.replies.length > 0) {
-    repliesHtml = thread.replies.map(reply => `
-      <div class="reply" style="border-left: 3px solid var(--brand); padding-left: 15px; margin-top: 15px; background: var(--panel); padding: 10px; border-radius: 8px;">
-        <p>${reply.content}</p>
-        <div class="thread-meta">da ${reply.author} - ${new Date(reply.date).toLocaleDateString()}</div>
-      </div>
-    `).join('');
-  }
+  try {
+    // Get the discussion
+    const { data: discussion, error: discussionError } = await supabase
+      .from('discussions')
+      .select('*')
+      .eq('id', threadId)
+      .single();
 
-  threadView.innerHTML = `
-    <h3>${thread.title}</h3>
-    <p>${thread.content}</p>
-    <div class="thread-meta">da ${thread.author} - ${new Date(thread.date).toLocaleDateString()}</div>
-    ${repliesHtml}
-    <button class="btn" onclick="loadThreads('${category}')">Torna alla lista</button>
-    ${currentUser ? '<button class="btn primary" onclick="replyToThread(\'' + category + '\', \'' + threadId + '\')">Rispondi</button>' : '<p style="color: var(--muted); margin-top: 10px;">Accedi per rispondere</p>'}
-  `;
+    if (discussionError) throw discussionError;
+
+    // Get replies
+    const { data: replies, error: repliesError } = await supabase
+      .from('replies')
+      .select('*')
+      .eq('discussion_id', threadId)
+      .order('created_at', { ascending: true });
+
+    if (repliesError) throw repliesError;
+
+    let repliesHtml = '';
+    if (replies && replies.length > 0) {
+      repliesHtml = replies.map(reply => `
+        <div class="reply" style="border-left: 3px solid var(--brand); padding-left: 15px; margin-top: 15px; background: var(--panel); padding: 10px; border-radius: 8px;">
+          <p>${reply.content}</p>
+          <div class="thread-meta">da ${reply.author} - ${new Date(reply.created_at).toLocaleDateString()}</div>
+        </div>
+      `).join('');
+    }
+
+    threadView.innerHTML = `
+      <h3>${discussion.title}</h3>
+      <p>${discussion.content}</p>
+      <div class="thread-meta">da ${discussion.author} - ${new Date(discussion.created_at).toLocaleDateString()}</div>
+      ${repliesHtml}
+      <button class="btn" onclick="loadThreads('${category}')">Torna alla lista</button>
+      ${currentUser ? '<button class="btn primary" onclick="replyToThread(\'' + category + '\', \'' + threadId + '\')">Rispondi</button>' : '<p style="color: var(--muted); margin-top: 10px;">Accedi per rispondere</p>'}
+    `;
+  } catch (error) {
+    console.error('Error loading thread:', error);
+    threadView.innerHTML = '<p style="color: red;">Errore nel caricamento del thread.</p>';
+  }
 }
 
 // Create new thread
@@ -131,26 +161,31 @@ function showThreadEditor() {
 
   document.body.appendChild(modal);
 
-  document.getElementById('thread-form').addEventListener('submit', (e) => {
+  document.getElementById('thread-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const title = document.getElementById('thread-title').value;
     const content = document.getElementById('thread-content').value;
 
     if (!title || !content) return;
 
-    const thread = {
-      id: Date.now().toString(),
-      title,
-      content: parseBBCode(content),
-      author: currentUser.user_metadata?.username || currentUser.email,
-      date: new Date().toISOString()
-    };
+    try {
+      const { data, error } = await supabase
+        .from('discussions')
+        .insert({
+          title,
+          content: parseBBCode(content),
+          author: currentUser.user_metadata?.username || currentUser.email,
+          category: currentCategory
+        });
 
-    if (!threads[currentCategory]) threads[currentCategory] = [];
-    threads[currentCategory].push(thread);
-    localStorage.setItem('forum-threads', JSON.stringify(threads));
-    loadThreads(currentCategory);
-    closeModal();
+      if (error) throw error;
+
+      loadThreads(currentCategory);
+      closeModal();
+    } catch (error) {
+      console.error('Error creating thread:', error);
+      alert('Errore nella creazione del thread.');
+    }
   });
 }
 
@@ -218,52 +253,52 @@ function replyToThread(category, threadId) {
 
   document.body.appendChild(modal);
 
-  document.getElementById('reply-form').addEventListener('submit', (e) => {
+  document.getElementById('reply-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const content = document.getElementById('reply-content').value;
 
     if (!content) return;
 
-    const reply = {
-      id: Date.now().toString(),
-      content: parseBBCode(content),
-      author: currentUser.user_metadata?.username || currentUser.email,
-      date: new Date().toISOString()
-    };
+    try {
+      const { data, error } = await supabase
+        .from('replies')
+        .insert({
+          discussion_id: threadId,
+          content: parseBBCode(content),
+          author: currentUser.user_metadata?.username || currentUser.email
+        });
 
-    const thread = threads[category].find(t => t.id === threadId);
-    if (thread) {
-      if (!thread.replies) thread.replies = [];
-      thread.replies.push(reply);
-      localStorage.setItem('forum-threads', JSON.stringify(threads));
+      if (error) throw error;
+
       viewThread(category, threadId);
       closeModal();
+    } catch (error) {
+      console.error('Error creating reply:', error);
+      alert('Errore nell\'invio della risposta.');
     }
   });
 }
 
 // Delete thread (admin only)
-function deleteThread(category, threadId) {
+async function deleteThread(category, threadId) {
   if (!currentUser || !currentUser.isAdmin) return;
 
-  threads[category] = threads[category].filter(t => t.id !== threadId);
-  localStorage.setItem('forum-threads', JSON.stringify(threads));
-  loadThreads(category);
+  try {
+    const { error } = await supabase
+      .from('discussions')
+      .delete()
+      .eq('id', threadId);
+
+    if (error) throw error;
+
+    loadThreads(category);
+  } catch (error) {
+    console.error('Error deleting thread:', error);
+    alert('Errore nell\'eliminazione del thread.');
+  }
 }
 
-// Update online users display
-function updateOnlineUsers() {
-  const onlineUsersList = document.getElementById('online-users-list');
-  onlineUsersList.innerHTML = onlineUsers.map(username => {
-    const user = users[username] || { username };
-    return `
-      <div class="user-item">
-        <div class="user-avatar" style="background-image: url('${user.pfp || ''}'); background-size: cover;"></div>
-        <span>${user.name || username}</span>
-      </div>
-    `;
-  }).join('');
-}
+
 
 // Load Discord widget
 function loadDiscordWidget() {

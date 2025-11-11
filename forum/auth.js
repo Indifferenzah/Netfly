@@ -12,7 +12,8 @@ export async function signUp(email, password, username) {
     options: {
       data: {
         username: username
-      }
+      },
+      emailRedirectTo: window.location.origin + '/forum'
     }
   })
   return { data, error }
@@ -23,6 +24,9 @@ export async function signIn(email, password) {
     email,
     password
   })
+  if (!error && data.user) {
+    window.location.href = 'index.html';
+  }
   return { data, error }
 }
 
