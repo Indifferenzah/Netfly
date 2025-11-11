@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registrazione | Valiance</title>
+  <meta name="description" content="Registrati al forum del Clan Valiance" />
+  <link rel="icon" href="/pfp.png" />
+  <link rel="stylesheet" href="../css/index.min.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #0a0e1a 0%, #070b10 50%, #0b1220 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .register-container {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 40px;
+      width: 100%;
+      max-width: 400px;
+    }
+    .register-container h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: var(--brand);
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--text);
+    }
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 16px;
+    }
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: var(--brand);
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+    .btn:hover {
+      opacity: 0.9;
+    }
+    .login-link {
+      text-align: center;
+      color: var(--muted);
+    }
+    .login-link a {
+      color: var(--brand);
+      text-decoration: none;
+    }
+    .error {
+      color: #ef4444;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .success {
+      color: #10b981;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="register-container">
+    <h1>Registrati</h1>
+    <div id="error-message" class="error" style="display: none;"></div>
+    <div id="success-message" class="success" style="display: none;"></div>
+    <div id="email-step">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" required>
+      </div>
+      <button type="button" class="btn" id="send-code-btn">Invia Codice</button>
+    </div>
+
+    <form id="register-form" style="display: none;">
+      <div class="form-group">
+        <label for="registration-code">Codice di Registrazione</label>
+        <input type="text" id="registration-code" required>
+      </div>
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" required>
+      </div>
+
+      <button type="submit" class="btn">Registrati</button>
+    </form>
+    <div class="login-link">
+      Hai già un account? <a href="login.html">Accedi</a>
+    </div>
+  </div>
+
+  <script type="module">
+    import { signUp, getCurrentUser } from './auth.js';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const user = await getCurrentUser();
+      if (user) {
+        window.location.href = 'index.html';
+      }
+    });
+
+    document.getElementById('send-code-btn').addEventListener('click', async () => {
+      const email = document.getElementById('email').value;
+      if (!email) {
+        document.getElementById('error-message').textContent = 'Inserisci un indirizzo email valido.';
+        document.getElementById('error-message').style.display = 'block';
+        return;
+      }
+
+      // Send registration code via local API
+      try {
+        const response = await fetch('/api/send-registration-code', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic ' + btoa('account@valiancev2.it:112@Outofhead!')
+          },
+          body: JSON.stringify({ email }),
+        });
+
+        if (response.ok) {
+          document.getElementById('email-step').style.display = 'none';
+          document.getElementById('register-form').style.display = 'block';
+          document.getElementById('success-message').textContent = 'Codice inviato! Controlla la tua email.';
+          document.getElementById('success-message').style.display = 'block';
+          document.getElementById('error-message').style.display = 'none';
+        } else {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.message || 'Errore nell\'invio del codice');
+        }
+      } catch (error) {
+        document.getElementById('error-message').textContent = error.message;
+        document.getElementById('error-message').style.display = 'block';
+        document.getElementById('success-message').style.display = 'none';
+      }
+    });
+
+    document.getElementById('register-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const registrationCode = document.getElementById('registration-code').value;
+      const username = document.getElementById('username').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      // Verify registration code via local API
+      try {
+        const verifyResponse = await fetch('/api/verify-registration-code', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic ' + btoa('account@valiancev2.it:112@Outofhead!')
+          },
+          body: JSON.stringify({ email, code: registrationCode }),
+        });
+
+        if (!verifyResponse.ok) {
+          throw new Error('Codice di registrazione non valido');
+        }
+
+        const { data, error } = await signUp(email, password, username);
+
+        if (error) {
+          document.getElementById('error-message').textContent = error.message;
+          document.getElementById('error-message').style.display = 'block';
+          document.getElementById('success-message').style.display = 'none';
+        } else {
+          document.getElementById('success-message').textContent = 'Registrazione completata! Controlla la tua email per confermare.';
+          document.getElementById('success-message').style.display = 'block';
+          document.getElementById('error-message').style.display = 'none';
+          document.getElementById('register-form').reset();
+          document.getElementById('email-step').style.display = 'block';
+          document.getElementById('register-form').style.display = 'none';
+        }
+      } catch (error) {
+        document.getElementById('error-message').textContent = error.message;
+        document.getElementById('error-message').style.display = 'block';
+        document.getElementById('success-message').style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
