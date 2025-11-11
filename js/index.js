@@ -209,7 +209,7 @@ async function applyDiscordAvatars() {
       try {
         const endpoint = window.location.hostname.includes("vercel.app")
           ? `/api/get-avatar?id=${encodeURIComponent(id)}`
-          : `/.netlify/functions/get-avatar?id=${encodeURIComponent(id)}`;
+          : `/api/get-avatar?id=${encodeURIComponent(id)}`;
 
         const res = await fetch(endpoint);
 
